@@ -3,7 +3,7 @@
 import numpy as np 
 import torch 
 from torch.nn import Parameter
-from tc_cores import TensorTrain 
+from tc.tc_cores import TensorTrain 
 
 torch.manual_seed(42)
 
