@@ -2,6 +2,7 @@
 
 import numpy as np 
 import torch 
+import tc
 import tc.tc_init 
 from tc.tc_decomp import orthogonalize_tt_cores
 from tc.tc_cores import TensorTrain
