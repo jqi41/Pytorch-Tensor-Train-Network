@@ -2,7 +2,8 @@
 
 import numpy as np 
 import torch 
-from tc_cores import TensorTrain
+import tc
+from tc.tc_cores import TensorTrain
 
 def to_tt_tensor(tens, max_tt_rank=10, epsilon=None):
     """
