@@ -7,8 +7,12 @@ The 'tc' folder includes all supporting python files for building TensorTrain ne
   tc.tc_init.py: Intialize model parameters of TensorTrain models \
   tc.tc_math.py: TensorTrain mathematical operations
 
-The 'cnn' folder includes advanced CNN architectures.
+Some of the advanced CNN architectures can be found in the 'cnn' folder.
+
+speech.extract_feat.py extracts both clean and noisy featuers for speech enhancement.
+
+train_tt.py trains a TensorTrain model for speech enhancement. 
  
- 
+
 
 
