@@ -1,6 +1,6 @@
 # Tensor-Train-Neural-Network
 
-The 'tc' folder includes all supporting python files for building TensorTrain neural networks. \
+The 'tc' folder includes all supporting python files for building TensorTrain neural networks. Specifically,
   tc.tc_cores.py: core TensorTrain bases  \
   tc.tc_decomp.py: tensor decompostion files \
   tc.tc_fc.py: TensorTrain Neural Network \
