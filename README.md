@@ -1,6 +1,6 @@
 # Tensor-Train-Neural-Network
 
-The 'tc' folder includes all supporting python files for building TensorTrain neural networks.
+# The 'tc' folder includes all supporting python files for building TensorTrain neural networks.
   
   tc.tc_cores.py: core TensorTrain bases
   
@@ -12,7 +12,7 @@ The 'tc' folder includes all supporting python files for building TensorTrain ne
   
   tc.tc_math.py: TensorTrain mathematical operations
   
- The 'cnn' folder includes advanced CNN architectures.
+# The 'cnn' folder includes advanced CNN architectures.
  
  
 
