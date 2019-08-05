@@ -9,9 +9,9 @@ The 'tc' folder includes all supporting python files for building TensorTrain ne
 
 Some of the advanced CNN architectures can be found in the 'cnn' folder.
 
-speech.extract_feat.py extracts both clean and noisy featuers for speech enhancement.
+``speech.extract_feat.py`` extracts both clean and noisy featuers for speech enhancement.
 
-train_tt.py trains a TensorTrain model for speech enhancement. 
+``train_tt.py`` trains a TensorTrain model for speech enhancement. 
  
 
 
