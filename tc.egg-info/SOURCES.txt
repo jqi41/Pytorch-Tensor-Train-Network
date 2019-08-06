@@ -1,0 +1,13 @@
+README.md
+setup.py
+tc/tc_cores.py
+tc/tc_decomp.py
+tc/tc_fc.py
+tc/tc_init.py
+tc/tc_math.py
+tc.egg-info/PKG-INFO
+tc.egg-info/SOURCES.txt
+tc.egg-info/dependency_links.txt
+tc.egg-info/not-zip-safe
+tc.egg-info/requires.txt
+tc.egg-info/top_level.txt

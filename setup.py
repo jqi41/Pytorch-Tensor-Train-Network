@@ -9,14 +9,14 @@ except ImportError:
 with open('README.md') as readme_file:
     readme = readme_file.read()
 
-with open('HISTORY.rst') as history_file:
-    history = history_file.read()
+#with open('HISTORY.rst') as history_file:
+#    history = history_file.read()
 
 setup(
     name = 'tc',
     version = '1.0',
     description = "Tensor-Train Network Library",
-    long_description=readme + '\n\n' + history,
+    long_description=readme + '\n\n',
     url='https://github.com/uwjunqi/Tensor-Train-Neural-Network/tree/master/tc',
     author="Jun Qi",
     author_email='jqi41@gatech.edu',

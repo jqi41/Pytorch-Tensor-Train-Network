@@ -1,0 +1,43 @@
+Metadata-Version: 1.1
+Name: tc
+Version: 1.0
+Summary: Tensor-Train Network Library
+Home-page: https://github.com/uwjunqi/Tensor-Train-Neural-Network/tree/master/tc
+Author: Jun Qi
+Author-email: jqi41@gatech.edu
+License: LGPL
+Description: # TC: Tensor-Train-Neural-Network
+        
+        ## Installation
+        
+        The main dependencies are *Numpy* and *PyTorch*. To download and install *tc*:
+        
+        ```
+        git clone https://github.com/uwjunqi/Tensor-Train-Neural-Network.git
+        cd Tensor-Train-Neural-Network
+        python setup.py install
+        ```
+        
+        ## Usage of training a speech enhancement system
+        
+        ```
+        speech/extract_feat.py --train_clean_list_fn="data/train_clean.scp" --train_noisy_list_fn="data/train_noisy.scp" --test_clean_list_fn="test_clean.scp" --test_noisy_list_fn="test_noisy.scp"
+        python speech/torch_tt.py
+        ```
+        
+        ## Contributing
+        
+        Pull requests are welcome!
+        
+        Besides, using the [issue tracker](https://github.com/uwjunqi/Tensor-Train-Neural-Network/issues), feel free to contact me at <jqi41@gatech.edu>. 
+        
+        
+        
+        
+Keywords: tc
+Platform: UNKNOWN
+Classifier: License :: OSI Approved :: ISC License (ISCL)
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
