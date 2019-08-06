@@ -1,4 +1,12 @@
-# Tensor-Train-Neural-Network
+# TC: Tensor-Train-Neural-Network
+
+## Installation
+
+The main dependencies are *Numpy* and *PyTorch*. To download and install *tc*:
+
+```
+git clone https://github.com/uwjunqi/Tensor-Train-Neural-Network/tree/master/tc
+```
 
 The 'tc' folder includes all supporting python files for building TensorTrain neural networks. Specifically,\
   tc.tc_cores.py: core TensorTrain bases  \
