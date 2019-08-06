@@ -10,6 +10,13 @@ cd Tensor-Train-Neural-Network
 python setup.py install
 ```
 
+## Usage of train_tt for training speech enhancement system
+
+```
+prepare data features
+python torch_tt.py
+```
+
 ## Contributing
 
 Pull requests are welcome!
