@@ -400,7 +400,7 @@ def round_tt(tt, max_tt_rank, epsilon):
 
 if __name__ == "__main__":
     
-    from tc_init import lecun_initializer, he_initializer
+    from tc.tc_init import lecun_initializer, he_initializer
     shape = [[4, 7, 4, 7], [5, 5, 5, 5]]
     rng_tt1 = lecun_initializer(shape, tt_rank=3)
     rng_tt2 = he_initializer(shape, tt_rank=3)
