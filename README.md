@@ -7,7 +7,7 @@ cd Tensor-Train-Neural-Network
 
 ## Installation
 
-The main dependencies are *Numpy* and *PyTorch*. To download and install *tc*:
+The main dependencies are *h5py*, *Numpy* and *PyTorch*. To download and install *tc*:
 
 ### CUDA 10.0 setup
 
