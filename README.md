@@ -14,5 +14,5 @@ python setup.py install
 
 Pull requests are welcome!
 
-Besides, using the [issue tracker](https://github.com/)
+Besides, using the [issue tracker](https://github.com/uwjunqi/Tensor-Train-Neural-Network/issues), feel free to contact me at <jqi41@gatech.edu>. 
 
