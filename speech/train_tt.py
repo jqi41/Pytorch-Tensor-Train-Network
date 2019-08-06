@@ -46,9 +46,6 @@ class tt_model(nn.Module):
         super(tt_model, self).__init__()
         if len(hidden_tensors) != 3:
             raise ValueError('The depth of hidden layers should be 3!')
-        print(input_dims)
-        print(output_dims)
-        print(np.prod(input_tensor))
         if np.prod(input_tensor) != input_dims:
             raise ValueError('The product of input tensors must be equal to input dimension.')
 
