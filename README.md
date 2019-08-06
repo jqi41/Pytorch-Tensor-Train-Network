@@ -6,7 +6,8 @@ The main dependencies are *Numpy* and *PyTorch*. To download and install *tc*:
 
 ```
 git clone https://github.com/uwjunqi/Tensor-Train-Neural-Network.git
-pip install -e tc
+cd Tensor-Train-Neural-Network
+python setup.py install
 ```
 
 ## Contributing
