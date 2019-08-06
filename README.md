@@ -10,7 +10,7 @@ cd Tensor-Train-Neural-Network
 python setup.py install
 ```
 
-## Usage of train_tt for training speech enhancement system
+## Usage of training a speech enhancement system
 
 ```
 speech/extract_feat.py --train_clean_list_fn="data/train_clean.scp" --train_noisy_list_fn="data/train_noisy.scp" --test_clean_list_fn="test_clean.scp" --test_noisy_list_fn="test_noisy.scp"
