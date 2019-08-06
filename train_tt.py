@@ -11,7 +11,7 @@ import torch
 import torch.nn as nn 
 import torch.optim as optim
 
-import tc
+import tc 
 from tc.tc_fc import TTLinear 
 
 seed = 7 
