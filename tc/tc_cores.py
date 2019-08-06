@@ -4,6 +4,7 @@ import torch
 import numpy as np 
 import matplotlib.pyplot as plt 
 from functools import reduce 
+import tc
 
 class TensorTrain(object):
     """Represents a Tensor-Train object (a TT-tensor or TT-matrix) as a 
@@ -129,20 +130,20 @@ class TensorTrain(object):
         """Returns a TensorTrain corresponding to element-wise sum tt_a + tt_b.
         Supports broadcasting (e.g. you can add TensorTrainBatch and TensorTrain).
         Just calls t3f.add, see its documentation for details."""
-        import tc_math
-        return tc_math.add(self, tc_math.multiply(other, -1))
+        import tc.tc_math
+        return tc.tc_math.add(self, tc_math.multiply(other, -1))
 
     def __neg__(self):
         """Returns a TensorTrain corresponding to element-wise negative -tt_a.
         Just calls t3f.multiply(self, -1.), see its documentation for details.
         """
-        import tc_math 
-        return tc_math.multiply(self, -1)
+        import tc.tc_math 
+        return tc.tc_math.multiply(self, -1)
 
     def __mul__(self, other):
         """Returns a TensorTrain corresponding to element-wise product tt_a * tt_b."""
-        import tc_math 
-        return tc_math.multiply(self, other)
+        import tc.tc_math 
+        return tc.tc_math.multiply(self, other)
 
 
 def _are_tt_cores_valid(tt_cores, shape, tt_ranks):
