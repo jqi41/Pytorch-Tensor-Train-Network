@@ -11,6 +11,7 @@ import torch
 import torch.nn as nn 
 import torch.optim as optim
 
+import tc
 from tc.tc_fc import TTLinear 
 
 seed = 7 
@@ -22,7 +23,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 parser = argparse.ArgumentParser(description='Training a tensor-train neural network...')
 parser.add_argument('--batch_size', default=200, help='Mini-batch size')
 parser.add_argument('--input_tensor', default=[4, 4, 16, 3])
-parser.add_argument('--hidden_tensors', default=[[8, 4, 8, 4], [8, 4, 8, 8], [4, 4, 4, 4]])
+parser.add_argument('--hidden_tensors', default=[[8, 4, 8, 4], [8, 4, 8, 4], [8, 4, 8, 8]])
 parser.add_argument('--data_path', metavar='DIR', default='exp/feats/feats_m109_15dB.h5', help='Feature container in h5 format')
 parser.add_argument('--save_model_path', default='model_tt.hdf5', help='The path to the saved model')
 parser.add_argument('--n_epochs', default=5, help='The total number of epochs', type=int)
@@ -54,11 +55,13 @@ class tt_model(nn.Module):
         self.TTLinear1 = TTLinear(input_tensor, hidden_tensors[0], tt_rank=tt_rank)
         self.TTLinear2 = TTLinear(hidden_tensors[0], hidden_tensors[1], tt_rank=tt_rank)
         self.TTLinear3 = TTLinear(hidden_tensors[1], hidden_tensors[2], tt_rank=tt_rank)
+        self.Linear4 = nn.Linear(np.prod(hidden_tensors[2]), 256)
 
     def forward(self, inputs):
         out = self.TTLinear1(inputs)
         out = self.TTLinear2(out)
         out = self.TTLinear3(out)
+        out = self.Linear4(out)
 
         return out 
 
