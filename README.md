@@ -1,14 +1,24 @@
 # TC: Tensor-Train-Neural-Network
 
+```
+git clone https://github.com/uwjunqi/Tensor-Train-Neural-Network.git
+cd Tensor-Train-Neural-Network
+```
+
 ## Installation
 
 The main dependencies are *Numpy* and *PyTorch*. To download and install *tc*:
 
+### CUDA 10.0 setup
+
 ```
-git clone https://github.com/uwjunqi/Tensor-Train-Neural-Network.git
-cd Tensor-Train-Neural-Network
+conda install pytorch torchvision cudatoolkit=10.0 -c pytorch
+conda install -c anaconda h5py 
+conda install -c conda-forge matplotlib 
 python setup.py install
 ```
+
+
 
 ## Usage of training a speech enhancement system
 
