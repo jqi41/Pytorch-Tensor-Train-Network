@@ -112,7 +112,7 @@ def test(args, model, device, test_loader):
     test_loss /= len(test_loader.dataset)
 
     print('\nTest set: Average loss: {:.4f}, \n'.format(
-            test_loss, correct, len(test_loader.dataset))
+            test_loss, correct, len(test_loader.dataset)))
 
 
 if __name__=='__main__':
