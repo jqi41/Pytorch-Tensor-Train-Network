@@ -19,10 +19,10 @@ python setup.py install
 ```
 
 ## Tensor-Train Neural Network for Image Processing
-'''
+```
 cd image
 python train_tt_image.py
-'''
+```
 
 
 ## Tensor-Train Neural Network for Speech Enhancement
