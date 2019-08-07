@@ -18,9 +18,14 @@ conda install -c conda-forge matplotlib
 python setup.py install
 ```
 
+## Tensor-Train Neural Network for Image Processing
+'''
+cd image
+python train_tt_image.py
+'''
 
 
-## Usage of training a speech enhancement system
+## Tensor-Train Neural Network for Speech Enhancement
 
 ```
 cd speech
@@ -28,7 +33,7 @@ extract_feat.py --train_clean_list_fn="data/train_clean.scp" --train_noisy_list_
 ```
 
 ```shell
-python train_tt.py
+python train_tt_speech.py
 ```
 
 ## Contributing
