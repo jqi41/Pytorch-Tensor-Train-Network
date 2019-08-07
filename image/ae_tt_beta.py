@@ -43,40 +43,41 @@ test_gen = torch.utils.data.DataLoader(dataset = test_data,
                                        batch_size = args.batch_size, 
                                        shuffle = False)
 
-class tt_model(nn.Module):
-    def __init__(self, hidden_tensors, input_tensor, output_dim, tt_rank):
-        super(tt_model, self).__init__()
-        if len(hidden_tensors) != 3:
-            raise ValueError('The depth of hidden layers should be 3!')
+# class tt_model(nn.Module):
+#     def __init__(self, hidden_tensors, input_tensor, output_dim, tt_rank):
+#         super(tt_model, self).__init__()
+#         if len(hidden_tensors) != 3:
+#             raise ValueError('The depth of hidden layers should be 3!')
 
-        self.TTLinear1 = TTLinear(input_tensor, hidden_tensors[0], tt_rank=tt_rank)
-        self.TTLinear2 = TTLinear(hidden_tensors[0], hidden_tensors[1], tt_rank=tt_rank)
-        self.TTLinear3 = TTLinear(hidden_tensors[1], hidden_tensors[2], tt_rank=tt_rank)
-        self.fc4 = nn.Linear(np.prod(hidden_tensors[2]), output_dim)
+#         self.TTLinear1 = TTLinear(input_tensor, hidden_tensors[0], tt_rank=tt_rank)
+#         self.TTLinear2 = TTLinear(hidden_tensors[0], hidden_tensors[1], tt_rank=tt_rank)
+#         self.TTLinear3 = TTLinear(hidden_tensors[1], hidden_tensors[2], tt_rank=tt_rank)
+#         self.fc4 = nn.Linear(np.prod(hidden_tensors[2]), output_dim)
 
-    def forward(self, inputs):
-        out = self.TTLinear1(inputs)
-        out = self.TTLinear2(out)
-        out = self.TTLinear3(out)
-        out = self.fc4(out)
+#     def forward(self, inputs):
+#         out = self.TTLinear1(inputs)
+#         out = self.TTLinear2(out)
+#         out = self.TTLinear3(out)
+#         out = self.fc4(out)
 
-        return F.log_softmax(out, dim=1)
+#         return F.log_softmax(out, dim=1)
 
 class tt_autoencoder(nn.Module):
     def __init__(self, hidden_tensors, input_tensor, output_dim, tt_rank):
         super(tt_autoencoder, self).__init__()
-        self.encoder = nn.Sequential(
-            TTLinear(input_tensor, hidden_tensors[0], tt_rank=tt_rank),
-            TTLinear(hidden_tensors[0], hidden_tensors[1], tt_rank=tt_rank),
-            TTLinear(hidden_tensors[1], hidden_tensors[2], tt_rank=tt_rank))
-        self.decoder = nn.Sequential(
-            TTLinear(hidden_tensors[2],hidden_tensors[1], tt_rank=tt_rank),
-            TTLinear(hidden_tensors[1],hidden_tensors[0], tt_rank=tt_rank),
-            TTLinear(hidden_tensors[0],input_tensor, tt_rank=tt_rank), nn.Tanh())
+        self.encoder1 = TTLinear(input_tensor, hidden_tensors[0], tt_rank=tt_rank)
+            # TTLinear(hidden_tensors[0], hidden_tensors[1], tt_rank=tt_rank),
+            # TTLinear(hidden_tensors[1], hidden_tensors[2], tt_rank=tt_rank))
+        self.decoder1 = TTLinear(hidden_tensors[0],input_tensor, tt_rank=tt_rank)
+            # TTLinear(hidden_tensors[2],hidden_tensors[1], tt_rank=tt_rank),
+            # TTLinear(hidden_tensors[1],hidden_tensors[0], tt_rank=tt_rank),
+            # TTLinear(hidden_tensors[0],input_tensor, tt_rank=tt_rank), nn.Tanh())
 
     def forward(self, inputs):
-        out = self.encoder(inputs)
-        out = self.decoder(inputs)
+        ### Encoder layer
+        out = self.encoder1(inputs)
+        ### Decoder Layer with activation
+        out = F.sigmoid(self.decoder1(out))
         return out
 
 
@@ -142,14 +143,6 @@ if __name__=='__main__':
                            transforms.Normalize((0.1307,), (0.3081,))
                        ])),
         batch_size=args.batch_size, shuffle=True)
-
-    iter_per_epoch = len(train_loader)
-    
-    data_iter = iter(train_loader)
-
-    # fixed_x, _ = next(data_iter)
-    # torchvision.utils.save_image(Variable(fixed_x).data.cpu(), './data/real_images.png')
-    # fixed_x = to_var(fixed_x.view(fixed_x.size(0), -1))
 
     for epoch in range(1, args.n_epochs + 1):
         train(args, model, device, train_loader, optimizer, epoch)
