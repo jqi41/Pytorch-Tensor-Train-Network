@@ -71,7 +71,7 @@ class tt_autoencoder(nn.Module):
             TTLinear(hidden_tensors[1], hidden_tensors[2], tt_rank=tt_rank))
         self.decoder = nn.Sequential(
             TTLinear(hidden_tensors[2],hidden_tensors[1]),
-            TTLinear(hidden_tensors[1],hidden_tensors[0])
+            TTLinear(hidden_tensors[1],hidden_tensors[0]),
             TTLinear(hidden_tensors[0],input_tensor), nn.Tanh())
 
     def forward(self, inputs):
