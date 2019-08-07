@@ -147,8 +147,8 @@ if __name__=='__main__':
     
     data_iter = iter(train_loader)
 
-    fixed_x, _ = next(data_iter)
-    torchvision.utils.save_image(Variable(fixed_x).data.cpu(), './data/real_images.png')
+    # fixed_x, _ = next(data_iter)
+    # torchvision.utils.save_image(Variable(fixed_x).data.cpu(), './data/real_images.png')
     # fixed_x = to_var(fixed_x.view(fixed_x.size(0), -1))
 
     for epoch in range(1, args.n_epochs + 1):
