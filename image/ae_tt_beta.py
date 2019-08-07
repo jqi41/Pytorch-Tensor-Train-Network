@@ -160,5 +160,5 @@ if __name__=='__main__':
         # test(args, model, device, test_loader)
 
     if (args.save_model):
-        torch.save(model.state_dict(),"mnist_tt.pt")
+        torch.save(model.state_dict(),"ae_tt.pt")
 
