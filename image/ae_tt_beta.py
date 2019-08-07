@@ -114,10 +114,6 @@ def test(args, model, device, test_loader):
     print('\nTest set: Average loss: {:.4f}, \n'.format(
             test_loss, correct, len(test_loader.dataset))
 
-def to_var(x):
-    if torch.cuda.is_available():
-        x = x.cuda()
-    return Variable(x)
 
 if __name__=='__main__':
     tt_rank = [1, 2, 2, 2, 1]
@@ -153,7 +149,7 @@ if __name__=='__main__':
 
     fixed_x, _ = next(data_iter)
     torchvision.utils.save_image(Variable(fixed_x).data.cpu(), './data/real_images.png')
-    fixed_x = to_var(fixed_x.view(fixed_x.size(0), -1))
+    # fixed_x = to_var(fixed_x.view(fixed_x.size(0), -1))
 
     for epoch in range(1, args.n_epochs + 1):
         train(args, model, device, train_loader, optimizer, epoch)
