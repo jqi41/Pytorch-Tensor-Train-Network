@@ -52,7 +52,7 @@ class tt_model(nn.Module):
         self.TTLinear1 = TTLinear(input_tensor, hidden_tensors[0], tt_rank=tt_rank)
         self.TTLinear2 = TTLinear(hidden_tensors[0], hidden_tensors[1], tt_rank=tt_rank)
         self.TTLinear3 = TTLinear(hidden_tensors[1], hidden_tensors[2], tt_rank=tt_rank)
-        self.fc4 = nn.Linear(np.prod(hidden_tensors[2]), 10)
+        self.fc4 = nn.Linear(np.prod(hidden_tensors[2]), output_dim)
 
     def forward(self, inputs):
         out = self.TTLinear1(inputs)
@@ -77,7 +77,7 @@ class tt_autoencoder(nn.Module):
     def forward(self, inputs):
         out = self.encoder(inputs)
         out = self.decoder(inputs)
-        return out 
+        return out
 
 
 def train(args, model, device, train_loader, optimizer, epoch):
