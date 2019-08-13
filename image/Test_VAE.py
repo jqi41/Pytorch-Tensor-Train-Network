@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[29]:
-
-
 #!/usr/bin/env python3
 
 import os
@@ -37,24 +34,22 @@ class tt_autoencoder(nn.Module):
         self.encoder1 = nn.Sequential(TTLinear(input_tensor, hidden_tensors[0], tt_rank=tt_rank),
                                       TTLinear(hidden_tensors[0], hidden_tensors[1], tt_rank=tt_rank),
                                       TTLinear(hidden_tensors[1], hidden_tensors[2], tt_rank=tt_rank))
-        self.decoder1 = nn.Sequential(TTLinear(hidden_tensors[2],hidden_tensors[1], tt_rank=tt_rank),
-                                      TTLinear(hidden_tensors[1],hidden_tensors[0], tt_rank=tt_rank),
-                                      TTLinear(hidden_tensors[0],input_tensor, tt_rank=tt_rank))
+        self.decoder1 = nn.Sequential(TTLinear(hidden_tensors[2], hidden_tensors[1], tt_rank=tt_rank),
+                                      TTLinear(hidden_tensors[1], hidden_tensors[0], tt_rank=tt_rank),
+                                      TTLinear(hidden_tensors[0], input_tensor, tt_rank=tt_rank))
+        self.lin = nn.Linear(np.prod(input_tensor), np.prod(input_tensor))
 
     def forward(self, inputs):
         ### Encoder layer
         out = self.encoder1(inputs)
         ### Decoder Layer with activation
-        out = F.sigmoid(self.decoder1(out))
+        out = torch.sigmoid(self.lin(self.decoder1(out)))
+
         return out
 
 
-# In[30]:
-
-
 if __name__=='__main__':
-
-
+    
     ### get data
     # convert data to torch.FloatTensor
     transform = transforms.ToTensor()
@@ -91,86 +86,49 @@ if __name__=='__main__':
 
 
     # number of epochs to train the model
-    n_epochs = 5
+    n_epochs = 20
 
 
-# In[31]:
+    for epoch in range(1, n_epochs+1):
+        # monitor training loss
+        train_loss = 0.0
+
+        ###################
+        # train the model #
+        ###################
+        for data in train_loader:
+            # _ stands in for labels, here
+            images, _ = data
+            # flatten images
+            images = images.view(images.size(0), -1)
+            images = images.to(device)
+            # clear the gradients of all optimized variables
+            optimizer.zero_grad()
+            # forward pass: compute predicted outputs by passing inputs to the model
+            outputs = model(images)
+            # calculate the loss
+            loss = criterion(outputs, images)
+            # backward pass: compute gradient of the loss with respect to model parameters
+            loss.backward()
+            # perform a single optimization step (parameter update)
+            optimizer.step()
+            # update running training loss
+            train_loss += loss.item()*images.size(0)
+
+        # print avg training statistics 
+        train_loss = train_loss/len(train_loader)
+        print('Epoch: {} \tTraining Loss: {:.6f}'.format(
+            epoch, 
+            train_loss
+            ))
 
 
-for epoch in range(1, n_epochs+1):
-    # monitor training loss
-    train_loss = 0.0
-
-    ###################
-    # train the model #
-    ###################
-    for data in train_loader:
-        # _ stands in for labels, here
-        images, _ = data
-        # flatten images
-        images = images.view(images.size(0), -1)
-        images = images.to(device)
-        # clear the gradients of all optimized variables
-        optimizer.zero_grad()
-        # forward pass: compute predicted outputs by passing inputs to the model
-        outputs = model(images)
-        # calculate the loss
-        loss = criterion(outputs, images)
-        # backward pass: compute gradient of the loss with respect to model parameters
-        loss.backward()
-        # perform a single optimization step (parameter update)
-        optimizer.step()
-        # update running training loss
-        train_loss += loss.item()*images.size(0)
-
-    # print avg training statistics 
-    train_loss = train_loss/len(train_loader)
-    print('Epoch: {} \tTraining Loss: {:.6f}'.format(
-        epoch, 
-        train_loss
-        ))
+    torch.save(model.state_dict(),"ae_tt.pt")
 
 
-torch.save(model.state_dict(),"ae_tt.pt")
+    import matplotlib.pyplot as plt
+    #get_ipython().run_line_magic('matplotlib', 'inline')
 
-
-# In[18]:
-
-
-import matplotlib.pyplot as plt
-get_ipython().run_line_magic('matplotlib', 'inline')
-
-# obtain one batch of test images
-dataiter = iter(test_loader)
-images, labels = dataiter.next()
-
-images_flatten = images.view(images.size(0), -1)
-# get sample outputs
-output = model(images_flatten.to(device))
-# prep images for display
-images = images.numpy()
-
-# output is resized into a batch of images
-output = output.view(batch_size, 1, 28, 28)
-# use detach when it's an output that requires_grad
-output = output.cpu().detach().numpy()
-
-# plot the first ten input images and then reconstructed images
-fig, axes = plt.subplots(nrows=2, ncols=10, sharex=True, sharey=True, figsize=(25,4))
-
-# input images on top row, reconstructions on bottom
-for images, row in zip([images, output], axes):
-    for img, ax in zip(images, row):
-        ax.imshow(np.squeeze(img), cmap='gray')
-        ax.get_xaxis().set_visible(False)
-        ax.get_yaxis().set_visible(False)
-
-
-# In[28]:
-
-
-
-def show_rec():
     # obtain one batch of test images
     dataiter = iter(test_loader)
     images, labels = dataiter.next()
@@ -196,11 +154,31 @@ def show_rec():
             ax.get_xaxis().set_visible(False)
             ax.get_yaxis().set_visible(False)
 
-show_rec()
 
+    def show_rec():
+        # obtain one batch of test images
+        dataiter = iter(test_loader)
+        images, labels = dataiter.next()
 
-# In[ ]:
+        images_flatten = images.view(images.size(0), -1)
+        # get sample outputs
+        output = model(images_flatten.to(device))
+        # prep images for display
+        images = images.numpy()
 
+        # output is resized into a batch of images
+        output = output.view(batch_size, 1, 28, 28)
+        # use detach when it's an output that requires_grad
+        output = output.cpu().detach().numpy()
 
+        # plot the first ten input images and then reconstructed images
+        fig, axes = plt.subplots(nrows=2, ncols=10, sharex=True, sharey=True, figsize=(25,4))
 
+        # input images on top row, reconstructions on bottom
+        for images, row in zip([images, output], axes):
+            for img, ax in zip(images, row):
+                ax.imshow(np.squeeze(img), cmap='gray')
+                ax.get_xaxis().set_visible(False)
+                ax.get_yaxis().set_visible(False)
 
+    show_rec()
