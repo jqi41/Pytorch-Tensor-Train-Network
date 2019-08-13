@@ -25,7 +25,6 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 batch_size =200
 input_tensor = [7, 4, 7, 4]
 hidden_tensors= [[16, 8, 16, 8], [16, 4, 8, 4], [4, 2, 4, 4]]
-n_epochs = 5
 
 
 class tt_autoencoder(nn.Module):
@@ -84,11 +83,10 @@ if __name__=='__main__':
     criterion = nn.BCELoss()
     
     # specify loss function
-    # optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
-    optimizer = torch.optim.SGD(model.parameters(), lr=0.01, momentum=0.4)
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 
     # number of epochs to train the model
-    n_epochs = 5
+    n_epochs = 20
 
 
 for epoch in range(1, n_epochs+1):
