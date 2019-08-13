@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[29]:
-
-
 #!/usr/bin/env python3
 
 import os
@@ -27,33 +24,33 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 batch_size =200
 input_tensor = [7, 4, 7, 4]
-hidden_tensors= [[8, 4, 8, 4], [8, 4, 8, 4], [4, 2, 4, 4]]
+hidden_tensors= [[16, 8, 16, 8], [16, 4, 8, 4], [4, 2, 4, 4]]
 n_epochs = 5
 
 
 class tt_autoencoder(nn.Module):
     def __init__(self, hidden_tensors, input_tensor, output_dim, tt_rank):
         super(tt_autoencoder, self).__init__()
-        self.encoder1 = nn.Sequential(TTLinear(input_tensor, hidden_tensors[0], tt_rank=tt_rank),
-                                      TTLinear(hidden_tensors[0], hidden_tensors[1], tt_rank=tt_rank),
-                                      TTLinear(hidden_tensors[1], hidden_tensors[2], tt_rank=tt_rank))
-        self.decoder1 = nn.Sequential(TTLinear(hidden_tensors[2],hidden_tensors[1], tt_rank=tt_rank),
-                                      TTLinear(hidden_tensors[1],hidden_tensors[0], tt_rank=tt_rank),
-                                      TTLinear(hidden_tensors[0],input_tensor, tt_rank=tt_rank))
+        self.encoder1 = nn.Sequential(TTLinear(input_tensor, hidden_tensors[0], tt_rank=tt_rank, activation='relu'),
+                                      TTLinear(hidden_tensors[0], hidden_tensors[1], tt_rank=tt_rank, activation='relu'),
+                                      TTLinear(hidden_tensors[1], hidden_tensors[2], tt_rank=tt_rank, activation='relu'))
+        self.decoder1 = nn.Sequential(TTLinear(hidden_tensors[2],hidden_tensors[1], tt_rank=tt_rank, activation='relu'),
+                                      TTLinear(hidden_tensors[1],hidden_tensors[0], tt_rank=tt_rank, activation='relu'),
+                        #             nn.Linear(np.prod(hidden_tensors[0]), np.prod(input_tensor)))
+                                      TTLinear(hidden_tensors[0],input_tensor, tt_rank=tt_rank, activation='relu'))
+
+        self.lin = nn.Linear(np.prod(input_tensor), np.prod(input_tensor))
 
     def forward(self, inputs):
         ### Encoder layer
         out = self.encoder1(inputs)
         ### Decoder Layer with activation
-        out = F.sigmoid(self.decoder1(out))
+        out = torch.sigmoid(self.lin(self.decoder1(out)))
+
         return out
 
 
-# In[30]:
-
-
 if __name__=='__main__':
-
 
     ### get data
     # convert data to torch.FloatTensor
@@ -74,7 +71,7 @@ if __name__=='__main__':
     # prepare data loaders
     train_loader = torch.utils.data.DataLoader(train_data, batch_size=batch_size, num_workers=num_workers)
     test_loader = torch.utils.data.DataLoader(test_data, batch_size=batch_size, num_workers=num_workers)
-    tt_rank = [1, 2, 2, 2, 1]
+    tt_rank = [1, 4, 4, 4, 1]
     print('Building a Tensor-Train model...')
     model = tt_autoencoder(hidden_tensors, input_tensor, 10, tt_rank).to(device)
     
@@ -85,16 +82,13 @@ if __name__=='__main__':
     lr = 0.001
     # specify loss function
     criterion = nn.BCELoss()
-
+    
     # specify loss function
-    optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
-
+    # optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+    optimizer = torch.optim.SGD(model.parameters(), lr=0.01, momentum=0.4)
 
     # number of epochs to train the model
     n_epochs = 5
-
-
-# In[31]:
 
 
 for epoch in range(1, n_epochs+1):
@@ -134,11 +128,8 @@ for epoch in range(1, n_epochs+1):
 torch.save(model.state_dict(),"ae_tt.pt")
 
 
-# In[18]:
-
-
 import matplotlib.pyplot as plt
-get_ipython().run_line_magic('matplotlib', 'inline')
+#get_ipython().run_line_magic('matplotlib', 'inline')
 
 # obtain one batch of test images
 dataiter = iter(test_loader)
@@ -164,10 +155,6 @@ for images, row in zip([images, output], axes):
         ax.imshow(np.squeeze(img), cmap='gray')
         ax.get_xaxis().set_visible(False)
         ax.get_yaxis().set_visible(False)
-
-
-# In[28]:
-
 
 
 def show_rec():
@@ -197,9 +184,6 @@ def show_rec():
             ax.get_yaxis().set_visible(False)
 
 show_rec()
-
-
-# In[ ]:
 
 
 
