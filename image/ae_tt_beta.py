@@ -43,25 +43,6 @@ test_gen = torch.utils.data.DataLoader(dataset = test_data,
                                        batch_size = args.batch_size, 
                                        shuffle = False)
 
-# class tt_model(nn.Module):
-#     def __init__(self, hidden_tensors, input_tensor, output_dim, tt_rank):
-#         super(tt_model, self).__init__()
-#         if len(hidden_tensors) != 3:
-#             raise ValueError('The depth of hidden layers should be 3!')
-
-#         self.TTLinear1 = TTLinear(input_tensor, hidden_tensors[0], tt_rank=tt_rank)
-#         self.TTLinear2 = TTLinear(hidden_tensors[0], hidden_tensors[1], tt_rank=tt_rank)
-#         self.TTLinear3 = TTLinear(hidden_tensors[1], hidden_tensors[2], tt_rank=tt_rank)
-#         self.fc4 = nn.Linear(np.prod(hidden_tensors[2]), output_dim)
-
-#     def forward(self, inputs):
-#         out = self.TTLinear1(inputs)
-#         out = self.TTLinear2(out)
-#         out = self.TTLinear3(out)
-#         out = self.fc4(out)
-
-#         return F.log_softmax(out, dim=1)
-
 class tt_autoencoder(nn.Module):
     def __init__(self, hidden_tensors, input_tensor, output_dim, tt_rank):
         super(tt_autoencoder, self).__init__()
@@ -81,42 +62,29 @@ class tt_autoencoder(nn.Module):
         return out
 
 
-def train(args, model, device, train_loader, optimizer, epoch):
-    model.train()
-    for batch_idx, (data, target) in enumerate(train_loader):
-        data = data.view(-1, 28*28)
-        data, target = data.to(device), target.to(device)
-        optimizer.zero_grad()
-        output = model(data)
-        loss = F.nll_loss(output, data)
-        loss.backward()
-        optimizer.step()
-        if batch_idx % 100 == 0:
-            print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
-                epoch, batch_idx * len(data), len(train_loader.dataset),
-                100. * batch_idx / len(train_loader), loss.item()))
-
-
-def test(args, model, device, test_loader):
-    model.eval()
-    test_loss = 0
-    correct = 0
-    with torch.no_grad():
-        for data, target in test_loader:
-            data = data.view(-1, 28*28)
-            data, target = data.to(device), target.to(device)
-            output = model(data)
-            test_loss += F.nll_loss(output, data, reduction='sum').item() # sum up batch loss
-            # pred = output.argmax(dim=1, keepdim=True)   # get the index of the max log-probability
-            # correct += pred.eq(target.view_as(pred)).sum().item()
-
-    test_loss /= len(test_loader.dataset)
-
-    print('\nTest set: Average loss: {:.4f}, \n'.format(
-            test_loss, correct, len(test_loader.dataset)))
-
 
 if __name__=='__main__':
+
+
+    ### get data
+    # convert data to torch.FloatTensor
+    transform = transforms.ToTensor()
+
+    # load the training and test datasets
+    train_data = datasets.MNIST(root='data', train=True,
+                                       download=True, transform=transform)
+    test_data = datasets.MNIST(root='data', train=False,
+                                      download=True, transform=transform)
+    # Create training and test dataloaders
+
+    # number of subprocesses to use for data loading
+    num_workers = 0
+    # how many samples per batch to load
+    batch_size = 20
+
+    # prepare data loaders
+    train_loader = torch.utils.data.DataLoader(train_data, batch_size=batch_size, num_workers=num_workers)
+    test_loader = torch.utils.data.DataLoader(test_data, batch_size=batch_size, num_workers=num_workers)
     tt_rank = [1, 2, 2, 2, 1]
     print('Building a Tensor-Train model...')
     model = tt_autoencoder(args.hidden_tensors, args.input_tensor, 10, tt_rank).to(device)
@@ -125,28 +93,48 @@ if __name__=='__main__':
     for param_tensor in model.state_dict():
         print(param_tensor, "\t", model.state_dict()[param_tensor].size())
 
-    loss_function = nn.CrossEntropyLoss()
     lr = 0.001
-    optimizer = torch.optim.Adam( model.parameters(), lr=lr)
+    # specify loss function
+    criterion = nn.MSELoss()
+
+    # specify loss function
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 
 
-    train_loader = torch.utils.data.DataLoader(
-        datasets.MNIST('../data', train=True, download=True,
-                       transform=transforms.Compose([
-                           transforms.ToTensor(),
-                           transforms.Normalize((0.1307,), (0.3081,))
-                       ])),
-        batch_size=args.batch_size, shuffle=True)
-    test_loader = torch.utils.data.DataLoader(
-        datasets.MNIST('../data', train=False, transform=transforms.Compose([
-                           transforms.ToTensor(),
-                           transforms.Normalize((0.1307,), (0.3081,))
-                       ])),
-        batch_size=args.batch_size, shuffle=True)
+    # number of epochs to train the model
+    n_epochs = 20
 
-    for epoch in range(1, args.n_epochs + 1):
-        train(args, model, device, train_loader, optimizer, epoch)
-        # test(args, model, device, test_loader)
+    for epoch in range(1, n_epochs+1):
+        # monitor training loss
+        train_loss = 0.0
+        
+        ###################
+        # train the model #
+        ###################
+        for data in train_loader:
+            # _ stands in for labels, here
+            images, _ = data
+            # flatten images
+            images = images.view(images.size(0), -1)
+            # clear the gradients of all optimized variables
+            optimizer.zero_grad()
+            # forward pass: compute predicted outputs by passing inputs to the model
+            outputs = model(images)
+            # calculate the loss
+            loss = criterion(outputs, images)
+            # backward pass: compute gradient of the loss with respect to model parameters
+            loss.backward()
+            # perform a single optimization step (parameter update)
+            optimizer.step()
+            # update running training loss
+            train_loss += loss.item()*images.size(0)
+                
+        # print avg training statistics 
+        train_loss = train_loss/len(train_loader)
+        print('Epoch: {} \tTraining Loss: {:.6f}'.format(
+            epoch, 
+            train_loss
+            ))
 
     if (args.save_model):
         torch.save(model.state_dict(),"ae_tt.pt")
