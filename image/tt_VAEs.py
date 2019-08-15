@@ -21,7 +21,7 @@ class tt_autoencoder(nn.Module):
                                       TTLinear(hidden_tensors[0], input_tensor, tt_rank=tt_rank))
         self.lin = nn.Linear(np.prod(input_tensor), np.prod(input_tensor))
         self.model_name = "Tensor_Train_Autoencoder"
-    def forward(self, inputs):
+    def forward(self, ):
         ### Encoder layer
         out = self.encoder1(inputs)
         ### Decoder Layer with activation
@@ -40,9 +40,10 @@ class tt_VAE(nn.Module):
         self.decoder1 = nn.Sequential(TTLinear(hidden_tensors[2],hidden_tensors[1], tt_rank=tt_rank),
                                       TTLinear(hidden_tensors[1],hidden_tensors[0], tt_rank=tt_rank),
                                       TTLinear(hidden_tensors[0],input_tensor, tt_rank=tt_rank))
+        self.lin = nn.Linear(np.prod(input_tensor), np.prod(input_tensor))
         
-    def encoder(self, inputs):
-        out = self.encoder1(inputs)
+    def encoder(self, x):
+        out = self.encoder1(x)
         return self.fc21(out), self.fc32(out) # mu, log_var
     
     def sampling(self, mu, log_var):
@@ -51,10 +52,10 @@ class tt_VAE(nn.Module):
         return eps.mul(std).add_(mu) # return z sample
         
     def decoder(self, z):
-        out = F.sigmoid(self.decoder1(z))
+        out = F.sigmoid(self.lin(self.decoder1(z)))
         return out
     
     def forward(self, x):
-        mu, log_var = self.encoder1(inputs)
+        mu, log_var = self.encoder1(x)
         z = self.sampling(mu, log_var)
         return self.decoder(z), mu, log_var
