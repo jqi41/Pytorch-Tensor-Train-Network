@@ -277,7 +277,7 @@ def ones_like(tt):
     Returns:
         TensorTrain object of the same shape as `tt` but with all entries equal to 1.
     """
-    if not (isinstance(tt, TensorTrain) or isinstance(tt, TensorTrainBatch)):
+    if not isinstance(tt, TensorTrain):
         raise ValueError("`tt' has to be a Tensor Train object.")
     else:
         shape = tt.get_raw_shape()
@@ -296,7 +296,7 @@ def zeros_like(tt):
     Returns:
         TensorTrain object of the same shape as `tt` but with all entries equal to 0.
     """
-    if not (isinstance(tt, TensorTrain) or isinstance(tt, TensorTrainBatch)):
+    if not isinstance(tt, TensorTrain):
         raise ValueError("`tt' has to be a Tensor Train object")
     else:
         shape = tt.get_raw_shape()
