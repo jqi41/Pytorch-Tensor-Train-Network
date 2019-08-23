@@ -3,8 +3,8 @@
 import numpy as np 
 import torch 
 from torch.nn import Parameter
-import tc
-from tc.tc_cores import TensorTrain 
+import tc 
+from tc.tc_cores import TensorTrain, TensorTrainBatch
 
 torch.manual_seed(42)
 
@@ -228,6 +228,38 @@ def tensor_with_random_cores(shape, tt_rank=2, mean=0., stddev=1.):
     return TensorTrain(tt_cores, shape, tt_rank)
 
 
+def tensor_batch_with_random_cores(shape, tt_rank=2, batch_size=1, mean=0, stddev=1.):
+    """Generate a batch of TT-tensors of given shape with N(mean, stddev^2) cores.
+    Args:
+        shape: array representing the shape of the future tensor.
+        tt_rank: a number or a (d+1)-element array with ranks.
+        batch_size: an integer.
+        mean: a number, the mean of the normal distribution used for
+            initializing TT-cores.
+        stddev: a number, the standard deviation of the normal distribution used
+            for initializing TT-cores.
+    Returns:
+        TensorTrainBatch containing TT-tensors
+    """
+    shape = np.array(shape)
+    tt_rank = np.array(tt_rank)
+    _validate_input_parameters(is_tensor=True, shape=shape, tt_rank=tt_rank, batch_size=batch_size)
+
+    num_dims = shape.size 
+    if tt_rank.size == 1:
+        tt_rank = tt_rank * np.ones(num_dims - 1)
+        tt_rank = np.insert(tt_rank, 0, 1)
+        tt_rank = np.append(tt_rank, 1)
+    tt_rank = tt_rank.astype(int)
+    tt_cores = [None] * num_dims 
+    for i in range(num_dims):
+        curr_core_shape = (batch_size, tt_rank[i], shape[i], tt_rank[i+1])
+        tt_cores[i] = torch.randn(curr_core_shape).normal_(mean=mean, std=stddev)
+
+    return TensorTrainBatch(tt_cores, shape, tt_rank, batch_size)
+
+
+
 def matrix_with_random_cores(shape, tt_rank=2, mean=0., stddev=1.):
     r"""Generate a TT-matrix of the given shape with N gaussian cores.
     Args:
@@ -268,6 +300,52 @@ def matrix_with_random_cores(shape, tt_rank=2, mean=0., stddev=1.):
     return TensorTrain(tt_cores, shape, tt_rank)
 
 
+def matrix_batch_with_random_cores(shape, tt_rank=2, batch_size=1, mean=0., stddev=1.):
+    """Generate a batch of TT-matrices of given shape with N(mean, stddev^2) cores.
+    Args:
+        shape: 2d array, shape[0] is the shape of the matrix row-index,
+            shape[1] is the shape of the column index.
+            shape[0] and shape[1] should have the same number of elements (d)
+            Also supports omitting one of the dimensions for vectors, e.g.
+                matrix_batch_with_random_cores([[2, 2, 2], None])
+            and
+                matrix_batch_with_random_cores([None, [2, 2, 2]])
+        will create a batch of one 8-element column and row vector correspondingly.
+        tt_rank: a number or a (d+1)-element array with ranks.
+        batch_size: an integer.
+        mean: a number, the mean of the normal distribution used for
+            initializing TT-cores.
+        stddev: a number, the standard deviation of the normal distribution used
+            for initializing TT-cores.
+    Returns:
+        TensorTrainBatch containing a batch of TT-matrices of size
+            np.prod(shape[0]) x np.prod(shape[1])
+    """
+    shape = list(shape)
+    # In case shape represents a vector, e.g. [None, [2, 2, 2]]
+    if shape[0] is None:
+        shape[0] = np.ones(len(shape[1]), dtype=int)
+    # In case shape represents a vector, e.g. [[2, 2, 2], None]
+    if shape[1] is None:
+        shape[1] = np.ones(len(shape[0]), dtype=int)
+    shape = np.array(shape)
+    tt_rank = np.array(tt_rank)
+    _validate_input_parameters(is_tensor=False, shape=shape, tt_rank=tt_rank, 
+                            batch_size=batch_size)
+    num_dims = shape[0].size
+    if tt_rank.size == 1:
+        tt_rank = tt_rank * np.ones(num_dims - 1)
+        tt_rank = np.concatenate([[1], tt_rank, [1]])
+    shape = shape.astype(int)
+    tt_cores = [None] * num_dims 
+    for i in range(num_dims):
+        curr_core_shape = (batch_size, tt_rank[i], shape[0][i], shape[1][i], tt_rank[i+1])
+        tt_cores[i] = torch.randn(curr_core_shape).normal_(mean=mean, std=stddev).type(dtype)
+    
+    return TensorTrainBatch(tt_cores, shape, tt_rank, batch_size)
+
+
+
 def ones_like(tt):
     r"""Constructs t3f.ones with the shape of `tt`.
     In the case when `tt` is TensorTrainBatch constructs t3f.ones with the shape
@@ -277,7 +355,7 @@ def ones_like(tt):
     Returns:
         TensorTrain object of the same shape as `tt` but with all entries equal to 1.
     """
-    if not (isinstance(tt, TensorTrain) or isinstance(tt, TensorTrainBatch)):
+    if not isinstance(tt, TensorTrain):
         raise ValueError("`tt' has to be a Tensor Train object.")
     else:
         shape = tt.get_raw_shape()
@@ -296,7 +374,7 @@ def zeros_like(tt):
     Returns:
         TensorTrain object of the same shape as `tt` but with all entries equal to 0.
     """
-    if not (isinstance(tt, TensorTrain) or isinstance(tt, TensorTrainBatch)):
+    if not isinstance(tt, TensorTrain):
         raise ValueError("`tt' has to be a Tensor Train object")
     else:
         shape = tt.get_raw_shape()
@@ -348,6 +426,45 @@ def random_tensor(shape, tt_rank=2, mean=0., stddev=1.):
         return tt
     else:
         raise NotImplementedError('non-zero mean is not supported yet')
+
+
+def random_tensor_batch(shape, tt_rank=2, batch_size=1, mean=0., stddev=1.):
+    """Generate a batch of TT-tensors with given shape, mean and stddev.
+    Entries of the generated tensors (in the full format) will be iid and satisfy
+    E[x_{i1i2..id}] = mean, Var[x_{i1i2..id}] = stddev^2, but the distribution is
+    in fact not Gaussian (but is close for large tensors).
+    In the current implementation only mean 0 is supported. To get
+    a random_tensor_batch with specified mean but tt_rank greater by 1 you can call
+        x = t3f.random_tensor_batch(shape, tt_rank, batch_size=bs, stddev=stddev)
+        x = mean * t3f.ones_like(x) + x
+    Args:
+        shape: array representing the shape of the future tensor.
+        tt_rank: a number or a (d+1)-element array with ranks.
+        batch_size: an integer.
+        mean: a number, the desired mean for the distribution of entries.
+        stddev: a number, the desired standard deviation for the distribution of entries.
+    Returns:
+        TensorTrainBatch containing TT-tensors.
+    """
+    # TODO: support shape and tt_ranks as TensorShape?.
+    # TODO: support None as a dimension.
+    shape = np.array(shape)
+    tt_rank = np.array(tt_rank)
+    _validate_input_parameters(is_tensor=True, shape=shape, tt_rank=tt_rank,
+                                batch_size=batch_size)
+    num_dims = shape.size
+    if tt_rank.size == 1:
+        tt_rank = tt_rank * np.ones(num_dims - 1)
+        tt_rank = np.insert(tt_rank, 0, 1)
+        tt_rank = np.append(tt_rank, 1)
+    tt_rank = tt_rank.astype(int)
+
+    cr_exponent = -1.0 / (2 * num_dims)
+    var = np.prod(tt_rank ** cr_exponent)
+    cr_stddev = stddev ** (1.0 / num_dims) * var
+    tt = tensor_batch_with_random_cores(shape, tt_rank=tt_rank, stddev=cr_stddev,
+                                      batch_size=batch_size)
+
 
     
 def random_matrix(shape, tt_rank=2, mean=0., stddev=1.):
@@ -406,6 +523,63 @@ def random_matrix(shape, tt_rank=2, mean=0., stddev=1.):
     core_stddev = stddev ** (1.0 / num_dims) * var
     tt = matrix_with_random_cores(shape, tt_rank=tt_rank, stddev=core_stddev)
 
+    if np.abs(mean) < 1e-8:
+        return tt
+    else:
+        raise NotImplementedError('non-zero mean is not supported yet')
+
+
+def random_matrix_batch(shape, tt_rank=2, batch_size=1, mean=0., stddev=1.):
+    """Generate a batch of TT-matrices with given shape, mean and stddev.
+    Entries of the generated matrices (in the full format) will be iid and
+    satisfy E[x_{i1i2..id}] = mean, Var[x_{i1i2..id}] = stddev^2, but the
+    distribution is in fact not Gaussian.
+    In the current implementation only mean 0 is supported. To get a
+    random_matrix_batch with specified mean but tt_rank greater by 1 you can call
+        x = t3f.random_matrix_batch(shape, tt_rank, batch_size=bs, stddev=stddev)
+        x = mean * t3f.ones_like(x) + x
+    Args:
+        shape: 2d array, shape[0] is the shape of the matrix row-index,
+        shape[1] is the shape of the column index.
+        shape[0] and shape[1] should have the same number of elements (d)
+        Also supports omitting one of the dimensions for vectors, e.g.
+             random_matrix_batch([[2, 2, 2], None])
+        and
+            random_matrix_batch([None, [2, 2, 2]])
+        will create a batch of one 8-element column and row vector correspondingly.
+        tt_rank: a number or a (d+1)-element array with ranks.
+        batch_size: an integer.
+        mean: a number, the desired mean for the distribution of entries.
+        stddev: a number, the desired standard deviation for the distribution of entries.
+    Returns:
+        TensorTrainBatch containing a batch of TT-matrices of size
+        np.prod(shape[0]) x np.prod(shape[1])
+     """
+    # In case the shape is immutable.
+    shape = list(shape)
+    # In case shape represents a vector, e.g. [None, [2, 2, 2]]
+    if shape[0] is None:
+        shape[0] = np.ones(len(shape[1]), dtype=int)
+    # In case shape represents a vector, e.g. [[2, 2, 2], None]
+    if shape[1] is None:
+        shape[1] = np.ones(len(shape[0]), dtype=int)
+    shape = np.array(shape)
+    tt_rank = np.array(tt_rank)
+    _validate_input_parameters(is_tensor=False, shape=shape, tt_rank=tt_rank,
+                             batch_size=batch_size)
+    num_dims = shape[0].size
+    if tt_rank.size == 1:
+        tt_rank = tt_rank * np.ones(num_dims - 1)
+        tt_rank = np.concatenate([[1], tt_rank, [1]])
+
+    shape = shape.astype(int)
+    tt_rank = tt_rank.astype(int)
+
+    cr_exponent = -1.0 / (2 * num_dims)
+    var = np.prod(tt_rank ** cr_exponent)
+    core_stddev = stddev ** (1.0 / num_dims) * var
+    tt = matrix_batch_with_random_cores(shape, tt_rank=tt_rank,
+                        stddev=core_stddev, batch_size=batch_size)
     if np.abs(mean) < 1e-8:
         return tt
     else:

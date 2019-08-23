@@ -3,7 +3,7 @@
 import numpy as np 
 import torch 
 import tc
-from tc.tc_cores import TensorTrain
+from tc.tc_cores import TensorTrain, TensorTrainBatch
 
 def to_tt_tensor(tens, max_tt_rank=10, epsilon=None):
     """
@@ -234,6 +234,63 @@ def _orthogonalize_tt_cores_left_to_right(tt):
     return TensorTrain(tt_cores, tt.get_raw_shape())
 
 
+def _orthogonalize_batch_tt_cores_left_to_right(tt):
+    """Orthogonalize TT-cores of a batch TT-object in the left to right order.
+    Args:
+        tt: TensorTrainBatch.
+    Returns:
+        TensorTrainBatch
+    """
+    # Left to right othogonalizatino.
+    ndims = tt.ndims 
+    raw_shape = tt.get_raw_shape()
+    tt_ranks = tt.get_tt_ranks()
+    next_rank = tt_ranks[0]
+    batch_size = tt.batch_size 
+
+    # Copy cores reference so we can change the cores. 
+    tt_cores = list(tt.tt_cores)
+    for core_idx in range(ndims - 1):
+        curr_core = tt_cores[core_idx]
+        # TT-ranks could have changed on the previous iteration, so `tt_ranks` can
+        # be outdated for the current TT-rank, but should be valid for the next
+        # TT-rank.
+        curr_rank = next_rank 
+        next_rank = tt_ranks[core_idx + 1]
+        if tt.is_tt_matrix():
+            curr_mode_left = raw_shape[0][core_idx]
+            curr_mode_right = raw_shape[1][core_idx]
+            curr_mode = curr_mode_left * curr_mode_right 
+        else:
+            curr_mode = raw_shape[0][core_idx]
+        
+        qr_shape = (batch_size, curr_rank * curr_mode, next_rank)
+        curr_core = curr_core.reshape(qr_shape)
+        curr_core, triang = torch.qr(curr_core)
+        triang_shape = triang.shape 
+        # The TT-rank could have changed: if qr_shape is e.g. 4 x 10, than q would
+        # be of size 4 x 4 and r would be 4 x 10, which means that the next rank
+        # should be changed to 4.
+        next_rank = triang_shape[1]
+        if tt.is_tt_matrix():
+            new_core_shape = (batch_size, curr_rank, curr_mode_left, curr_mode_right, next_rank)
+        else:
+            new_core_shape = (batch_size, curr_rank, curr_mode, next_rank)
+        
+        tt_cores[core_idx] = curr_core.reshape(new_core_shape)
+        next_core = tt_cores[core_idx + 1].reshape(batch_size, triang_shape[2], -1)
+        tt_cores[core_idx + 1] = torch.mm(triang, next_core)
+    
+    if tt.is_tt_matrix():
+        last_core_shape = (batch_size, next_rank, raw_shape[0][-1], raw_shape[1][-1], 1)
+    else:
+        last_core_shape = (batch_size, next_rank, raw_shape[0][-1], 1)
+    tt_cores[-1] = tt_cores[-1].reshape(last_core_shape)
+    # TODO: infer the tt_ranks.
+
+    return TensorTrainBatch(tt_cores, tt.get_raw_shape(), batch_size=batch_size)
+
+
 def _orthogonalize_tt_cores_right_to_left(tt):
     """Orthogonalize TT-cores of a TT-object in the right to left order.
     Args:
@@ -291,14 +348,27 @@ def _orthogonalize_tt_cores_right_to_left(tt):
 
 
 def orthogonalize_tt_cores(tt, left_to_right=True):
-    """ Orthogonalize TT-cores of a TT-object. """
-    if left_to_right:
-        return _orthogonalize_tt_cores_left_to_right(tt)
+    """Orthogonalize TT-cores of a TT-object.
+    Args:
+        tt: TenosorTrain or a TensorTrainBatch.
+        left_to_right: bool, the direction of orthogonalization.
+    Returns:
+        The same type as the input `tt` (TenosorTrain or a TensorTrainBatch).
+    """
+    if isinstance(tt, TensorTrainBatch):
+        if left_to_right:
+            return _orthogonalize_batch_tt_cores_left_to_right(tt)
+        else:
+            raise NotImplementedError('Batch reight to left orthogonalization is not '
+                                    'supported yet.')
     else:
-        return _orthogonalize_tt_cores_right_to_left(tt)
+        if left_to_right:
+            return _orthogonalize_tt_cores_left_to_right(tt)
+        else:
+            return _orthogonalize_tt_cores_right_to_left(tt)
 
 
-def round_tt(tt, max_tt_rank, epsilon):
+def _round_tt(tt, max_tt_rank, epsilon):
     """TT-rounding procedure, returns a TT object with smaller TT-ranks.
     Args:
         tt: `TensorTrain` object, TT-tensor or TT-matrix
@@ -397,10 +467,123 @@ def round_tt(tt, max_tt_rank, epsilon):
     return TensorTrain(tt_cores, tt.get_raw_shape())
 
 
+def _round_batch_tt(tt, max_tt_rank, epsilon):
+    """Internal function that rounds a TensorTrainBatch.
+    See round for details.
+    """
+    ndims = tt.ndims 
+    max_tt_rank = np.array(max_tt_rank).astype(np.int32)
+    if max_tt_rank < 1:
+        raise ValueError('Maximum TT-rank should be greater or equal to 1.')
+    if epsilon is not None and epsilon < 0:
+        raise ValueError('Epsilon should be non-negative.')
+    if max_tt_rank.size == 1:
+        max_tt_rank = (max_tt_rank * np.ones(ndims + 1)).astype(np.int32)
+    elif max_tt_rank.size != ndims + 1:
+        raise ValueError('max_tt_rank should be a number or a vector of size (d+1) '
+                    'where d is the number of dimensions (rank) of the tensor.')
+    raw_shape = tt.get_raw_shape()
+    batch_size = tt.batch_size
+
+    tt_cores = orthogonalize_tt_cores(tt).tt_cores 
+    # Copy cores reference so we can change the cores. 
+    tt_cores = list(tt_cores)
+
+    ranks = [1] * (ndims + 1)
+    are_tt_ranks_defined = True 
+    # Right to left SVD compression.
+    for core_idx in range(ndims-1, 0, -1):
+        curr_core = tt_cores[core_idx]
+        if tt.is_tt_matrix():
+            curr_mode_left = raw_shape[0][core_idx]
+            curr_mode_right = raw_shape[1][core_idx]
+            curr_mode = curr_mode_left * curr_mode_right 
+        else:
+            curr_mode = raw_shape[0][core_idx]
+        
+        columns = curr_mode * ranks[core_idx + 1]
+        curr_core = curr_core.reshape((batch_size, -1, columns))
+        rows = curr_core.shape[1]
+        if max_tt_rank[core_idx] == 1:
+            ranks[core_idx] = 1
+        else:
+            try:
+                ranks[core_idx] = min(max_tt_rank[core_idx], rows, columns)
+            except TypeError:
+                # Some of the values are undefined on the compilation stage and thus
+                # they are tf.tensors instead of values.
+                min_dim = min(rows, columns)
+                ranks[core_idx] = min(max_tt_rank[core_idx], min_dim)
+                are_tt_ranks_defined = False 
+        u, s, v = torch.svd(curr_core)
+        u = u[:, :, 0:ranks[core_idx]]
+        s = s[:, 0:ranks[core_idx]]
+        v = v[:, :, 0:ranks[core_idx]]
+        if tt.is_tt_matrix():
+            core_shape = (batch_size, ranks[core_idx], curr_mode_left, curr_mode_right,
+                        ranks[core_idx + 1])
+        else:
+            core_shape = (batch_size, ranks[core_idx], curr_mode, ranks[core_idx + 1])
+        tt_cores[core_idx] = v.permute(0, 2, 1).reshape(core_shape)
+        pre_core_shape = (batch_size, -1, rows)
+        tt_cores[core_idx - 1] = tt_cores[core_idx - 1].reshape(pre_core_shape)
+        tt_cores[core_idx - 1] = torch.mm(tt_cores[core_idx - 1], u)
+        tt_cores[core_idx - 1] = torch.mm(tt_cores[core_idx - 1], torch.diag(s))
+    
+    if tt.is_tt_matrix():
+        core_shape = (batch_size, ranks[0], raw_shape[0][0], raw_shape[1][0], ranks[1])
+    else:
+        core_shape = (batch_size, ranks[0], raw_shape[0][0], ranks[1])
+    tt_cores[0] = tt_cores[0].reshape(core_shape)
+    if not are_tt_ranks_defined:
+        ranks = None 
+    
+    return TensorTrainBatch(tt_cores, tt.get_raw_shape(), ranks, batch_size=tt.batch_size)
+
+
+def round(tt, max_tt_rank=None, epsilon=None):
+    """TT-rounding procedure, returns a TT object with smaller TT-ranks.
+    Args:
+        tt: `TensorTrain` object, TT-tensor or TT-matrix
+        max_tt_rank: a number or a list of numbers
+            If a number, than defines the maximal TT-rank of the result.
+            If a list of numbers, than `max_tt_rank` length should be d+1
+            (where d is the rank of `tens`) and `max_tt_rank[i]` defines
+            the maximal (i+1)-th TT-rank of the result.
+            The following two versions are equivalent
+                `max_tt_rank = r`
+            and
+                `max_tt_rank = r * np.ones(d-1)`
+        epsilon: a floating point number or None
+            If the TT-ranks are not restricted (`max_tt_rank=np.inf`), then
+            the result would be guarantied to be `epsilon` close to `tt`
+            in terms of relative Frobenius error:
+                ||res - tt||_F / ||tt||_F <= epsilon
+            If the TT-ranks are restricted, providing a loose `epsilon` may
+            reduce the TT-ranks of the result.
+            E.g.
+                round(tt, max_tt_rank=100, epsilon=0.9)
+            will probably return you a TT-tensor with TT-ranks close to 1, not 100.
+            Note that providing a nontrivial (= not equal to None) `epsilon` will make
+            the TT-ranks of the result undefined on the compilation stage
+            (e.g. res.get_tt_ranks() will return None, but t3f.tt_ranks(res).eval()
+            will work).
+    Returns:
+        `TensorTrain` object containing a TT-tensor.
+    Raises:
+        ValueError if max_tt_rank is less than 0, if max_tt_rank is not a number and
+        not a vector of length d + 1 where d is the number of dimensions (rank) of
+        the input tensor, if epsilon is less than 0.
+    """  
+    if isinstance(tt, TensorTrainBatch):
+        return _round_batch_tt(tt, max_tt_rank, epsilon)
+    else:
+        return _round_tt(tt, max_tt_rank, epsilon)
+        
 
 if __name__ == "__main__":
     
-    from tc.tc_init import lecun_initializer, he_initializer
+    from tc_init import lecun_initializer, he_initializer
     shape = [[4, 7, 4, 7], [5, 5, 5, 5]]
     rng_tt1 = lecun_initializer(shape, tt_rank=3)
     rng_tt2 = he_initializer(shape, tt_rank=3)
