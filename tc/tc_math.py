@@ -790,41 +790,14 @@ def multiply(tt_left, right):
 
 if __name__ == "__main__":
     
-    from tc_init import lecun_initializer, he_initializer, glorot_initializer
-    shape1 = [[4, 7, 4, 7], [5, 5, 5, 5]]
-    shape2 = [[5, 5, 5, 5], [4, 3, 4, 3]]
-    shape3 = [[4, 7, 4, 7], [5, 5, 5, 5]]
-    rng_tt1 = lecun_initializer(shape1, tt_rank=3)
-    rng_tt2 = he_initializer(shape2, tt_rank=3)
-    rng_tt3 = tt_tt_matmul(rng_tt1, rng_tt2)
-
-    rng_tt3 = transpose(transpose(glorot_initializer(shape3, tt_rank=3)))
-    norm_rng_tt3 = renormalize_tt_cores(rng_tt3)
-    print(flat_inner(rng_tt1, rng_tt3))
-
-    print(full_tt(rng_tt1).shape)
-    print(frobenius_norm(rng_tt1, 1e-6))
+    from tc_init import matrix_batch_with_random_cores
     
-    rng_tt4 = rng_tt1 + rng_tt3
-    print(rng_tt4.get_shape())
+    tt_rank = [1, 2, 2, 2, 1]
+    shape1 = [[4, 7, 4, 7], [5, 5, 5, 5]]
+    shape2 = [[5, 5, 5, 5], [2, 8, 2, 8]]
+    batch_size = 50
+    tt1 = matrix_batch_with_random_cores(shape1, tt_rank=tt_rank, batch_size=batch_size)
+    tt2 = matrix_batch_with_random_cores(shape2, tt_rank=tt_rank, batch_size=batch_size)
 
-    print(rng_tt1)
-    print(rng_tt4)
-    print(multiply(rng_tt4, -1))
-
-    matrix_1 = torch.randn(625, 15)
-    print(tt_dense_matmul(rng_tt1, matrix_1))
-    print(rng_tt1 * rng_tt1)
-
-    matrix_2 = torch.randn(768, 200)
-    shape4 = [[16, 16, 3], [4, 8, 5]]
-    shape5 = [[4, 8, 5], [4, 8, 8]]
-    rng_tt4 = glorot_initializer(shape4, tt_rank=3)
-    rng_tt5 = glorot_initializer(shape5, tt_rank=3)
-    res1 = dense_tt_matmul(matrix_2.t(), rng_tt4)
-    res2 = dense_tt_matmul(res1, rng_tt5)
-    print(res1.shape)
-    print(res2.shape)
-
-
-
+    res = tt_tt_matmul(tt1, tt2)
+    print(res)

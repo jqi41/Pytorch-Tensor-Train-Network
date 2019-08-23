@@ -259,7 +259,6 @@ def tensor_batch_with_random_cores(shape, tt_rank=2, batch_size=1, mean=0, stdde
     return TensorTrainBatch(tt_cores, shape, tt_rank, batch_size)
 
 
-
 def matrix_with_random_cores(shape, tt_rank=2, mean=0., stddev=1.):
     r"""Generate a TT-matrix of the given shape with N gaussian cores.
     Args:
@@ -339,11 +338,11 @@ def matrix_batch_with_random_cores(shape, tt_rank=2, batch_size=1, mean=0., stdd
     shape = shape.astype(int)
     tt_cores = [None] * num_dims 
     for i in range(num_dims):
-        curr_core_shape = (batch_size, tt_rank[i], shape[0][i], shape[1][i], tt_rank[i+1])
-        tt_cores[i] = torch.randn(curr_core_shape).normal_(mean=mean, std=stddev).type(dtype)
+        curr_core_shape = tuple([batch_size, tt_rank[i], shape[0][i], shape[1][i], tt_rank[i+1]])
+        print("curr_core_shape = {}".format(curr_core_shape))
+        tt_cores[i] = torch.randn(curr_core_shape).normal_(mean=mean, std=stddev)
     
     return TensorTrainBatch(tt_cores, shape, tt_rank, batch_size)
-
 
 
 def ones_like(tt):
@@ -464,7 +463,6 @@ def random_tensor_batch(shape, tt_rank=2, batch_size=1, mean=0., stddev=1.):
     cr_stddev = stddev ** (1.0 / num_dims) * var
     tt = tensor_batch_with_random_cores(shape, tt_rank=tt_rank, stddev=cr_stddev,
                                       batch_size=batch_size)
-
 
     
 def random_matrix(shape, tt_rank=2, mean=0., stddev=1.):
@@ -703,11 +701,10 @@ def get_variables(initializer=None):
 
 if __name__=="__main__":
 
-    shape = [[4, 7, 4, 7], [5, 5, 5, 5]]
-    tt1 = matrix_with_random_cores(shape, tt_rank=2)
-    tt2 = matrix_zeros(shape)
-
-    print(lecun_initializer(shape, tt_rank=3).tt_cores[0])
-    print(glorot_initializer(shape, tt_rank=3).tt_cores[0])
-    print(he_initializer(shape, tt_rank=3).tt_cores[0])
+    tt_rank = [1, 2, 2, 2, 1]
+    shape1 = [[4, 7, 4, 7], [5, 5, 5, 5]]
+    shape2 = [[5, 5, 5, 5], [2, 8, 2, 8]]
+    batch_size = 50
+    tt1 = matrix_batch_with_random_cores(shape1, tt_rank=tt_rank, batch_size=batch_size)
+    tt2 = matrix_batch_with_random_cores(shape2, tt_rank=tt_rank, batch_size=batch_size)
 
