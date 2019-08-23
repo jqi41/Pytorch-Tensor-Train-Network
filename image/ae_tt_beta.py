@@ -116,6 +116,7 @@ if __name__=='__main__':
             images, _ = data
             # flatten images
             images = images.view(images.size(0), -1)
+            images = images.to(device)
             # clear the gradients of all optimized variables
             optimizer.zero_grad()
             # forward pass: compute predicted outputs by passing inputs to the model
