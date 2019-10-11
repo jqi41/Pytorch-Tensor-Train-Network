@@ -97,7 +97,7 @@ for epoch in range(args.n_epochs):
         total_loss_train += loss.item()
         if idx % 500 == 0:
             tmp_loss = total_loss_train / (idx+1)
-            print('Epoch{0}, idx={1}, loss={2}'.format(epoch, idx, tmp_loss))
+            print('Epoch{0}, idx={1}, Training Loss={2}'.format(epoch, idx, tmp_loss))
     total_loss_train /= n_batch_train 
 
     for idx in range(n_batch_test):
