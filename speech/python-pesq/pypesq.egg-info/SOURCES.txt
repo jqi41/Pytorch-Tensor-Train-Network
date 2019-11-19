@@ -1,0 +1,14 @@
+README.md
+setup.py
+pypesq/__init__.py
+pypesq/dsp.c
+pypesq/pesq.c
+pypesq/pesqdsp.c
+pypesq/pesqio.c
+pypesq/pesqmain.c
+pypesq/pesqmod.c
+pypesq.egg-info/PKG-INFO
+pypesq.egg-info/SOURCES.txt
+pypesq.egg-info/dependency_links.txt
+pypesq.egg-info/not-zip-safe
+pypesq.egg-info/top_level.txt
