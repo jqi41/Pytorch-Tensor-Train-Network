@@ -51,5 +51,16 @@ If you use the codes for your research work, please cite the following paper:
 
 [2] Jun Qi, Jun Du, Sabato Marco Siniscalchi, Chin-Hui Lee, "A Theory on Deep Neural Network based Vector-to-Vector Regression with an Illustration of Its Expressive Power in Speech Enhancement", in IEEE/ACM Transactions on Audio, Speech and Language Processing (TASLP), Vol 27 ,  no. 12, pp. 1932-1943, Dec 2019. 
 
+```@article{qi2019theory,
+  title={A Theory on Deep Neural Network Based Vector-to-Vector Regression With an Illustration of Its Expressive Power in Speech Enhancement},
+  author={Qi, Jun and Du, Jun and Siniscalchi, Sabato Marco and Lee, Chin-Hui},
+  journal={IEEE/ACM Transactions on Audio, Speech, and Language Processing},
+  volume={27},
+  number={12},
+  pages={1932--1943},
+  year={2019},
+  publisher={IEEE}
+}```
+
 
 
