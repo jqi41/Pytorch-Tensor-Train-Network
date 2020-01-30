@@ -42,3 +42,14 @@ Pull requests are welcome!
 
 Besides, using the [issue tracker](https://github.com/uwjunqi/Tensor-Train-Neural-Network/issues), feel free to contact me at <jqi41@gatech.edu>. 
 
+
+## Paper Citation:
+
+If you use the codes for your research work, please cite the following paper:
+
+[1] Jun Qi, Hu Hu, Sabato Marco Siniscalchi, Chin-Hui Lee, "Tensor-Train Network based Tensor-to-Vector Regression for Multi-Channel Speech Enhancement,” in Proc. IEEE Intl. Conf. on Acoustic, Speech, and Signal Processing (ICASSP), Barcelona, Spain, 2020. 
+
+[2] Jun Qi, Jun Du, Sabato Marco Siniscalchi, Chin-Hui Lee, "A Theory on Deep Neural Network based Vector-to-Vector Regression with an Illustration of Its Expressive Power in Speech Enhancement", in IEEE/ACM Transactions on Audio, Speech and Language Processing (TASLP), Vol 27 ,  no. 12, pp. 1932-1943, Dec 2019. 
+
+
+
