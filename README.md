@@ -1,5 +1,7 @@
 # TC: Tensor-Train-Neural-Network
 
+The package particularly aims at Tensor Decompositions to Deep Neural Networks, particularly for Tensor-to-Vector Regression tasks, e.g., Speech and Image Enhancement. 
+
 ```
 git clone https://github.com/uwjunqi/Tensor-Train-Neural-Network.git
 cd Tensor-Train-Neural-Network
