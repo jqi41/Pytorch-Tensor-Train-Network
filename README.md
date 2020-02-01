@@ -49,12 +49,12 @@ Besides, using the [issue tracker](https://github.com/uwjunqi/Tensor-Train-Neura
 
 If you use the codes for your research work, please cite the following paper:
 
-[1] Jun Qi, Hu Hu, Yannan Wang, Chao-Han Huck Yang, Sabato Marco Siniscalchi, Chin-Hui Lee, "Tensor-Train Network based Tensor-to-Vector Regression for Multi-Channel Speech Enhancement,” in Proc. IEEE Intl. Conf. on Acoustic, Speech, and Signal Processing (ICASSP), Barcelona, Spain, 2020. 
+[1] Jun Qi, Hu Hu, Yannan Wang, Chao-Han Huck Yang, Sabato Marco Siniscalchi, Chin-Hui Lee, "Tensor-to-Vector Regression for Multi-Channel Speech Enhancement based on Tensor-Train Network,” in Proc. IEEE Intl. Conf. on Acoustic, Speech, and Signal Processing (ICASSP), Barcelona, Spain, 2020. 
 
 ```
 {
   @article{qi2020tensor,
-  title={Tensor-Train Network based Tensor-to-Vector Regression for Multi-Channel Speech Enhancement},
+  title={Tensor-to-Vector Regression for Multi-Channel Speech Enhancement based on Tensor-Train Network},
   author={Jun Qi, Hu Hu, Yannan Wang, Chao-Han Huck Yang, Sabato Marco Siniscalchi, Chin-Hui Lee},
   journal={IEEE ICASSP},
   volume={},
