@@ -51,6 +51,8 @@ If you use the codes for your research work, please cite the following paper:
 
 [1] Jun Qi, Hu Hu, Yannan Wang, Chao-Han Huck Yang, Sabato Marco Siniscalchi, Chin-Hui Lee, "Tensor-to-Vector Regression for Multi-Channel Speech Enhancement based on Tensor-Train Network,” in Proc. IEEE Intl. Conf. on Acoustic, Speech, and Signal Processing (ICASSP), Barcelona, Spain, 2020. 
 
+https://arxiv.org/abs/2002.00544
+
 ```
 {
   @article{qi2020tensor,
