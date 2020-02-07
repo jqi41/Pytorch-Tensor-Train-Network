@@ -47,7 +47,12 @@ Besides, using the [issue tracker](https://github.com/uwjunqi/Tensor-Train-Neura
 
 ## Paper Citation:
 
-If you use the codes for your research work, please cite the following paper:
+### Note this is not an official implement of [1] Qi et al. ICASSP 2020 and [2] Qi et al.TASLP
+This repo is releaed for general use and also included some image TTN examples. 
+If your are intested on reproducing the results of [1] and [2] please contact. (jqi41 at gatech dot edu)
+
+
+If you use the codes for your research work, please consider cite the following paper:
 
 [1] Jun Qi, Hu Hu, Yannan Wang, Chao-Han Huck Yang, Sabato Marco Siniscalchi, Chin-Hui Lee, "Tensor-to-Vector Regression for Multi-Channel Speech Enhancement based on Tensor-Train Network,” in Proc. IEEE Intl. Conf. on Acoustic, Speech, and Signal Processing (ICASSP), Barcelona, Spain, 2020. 
 
