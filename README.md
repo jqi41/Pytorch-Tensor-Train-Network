@@ -21,6 +21,15 @@ python setup.py install
 ```
 
 ## Tensor-Train Neural Network for Image Processing
+
+- DNN AE result
+
+![img](https://github.com/uwjunqi/Tensor-Train-Neural-Network/blob/master/image/ae_results.png)
+
+- TTN AE result
+
+![img](https://github.com/uwjunqi/Tensor-Train-Neural-Network/blob/master/image/ttn_result.png)
+
 ```
 cd image
 python train_tt_image.py
