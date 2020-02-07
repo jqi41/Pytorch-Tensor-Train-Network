@@ -51,14 +51,14 @@ python train_tt_speech.py
 
 Pull requests are welcome!
 
-Besides, using the [issue tracker](https://github.com/uwjunqi/Tensor-Train-Neural-Network/issues), feel free to contact me at <jqi41@gatech.edu>. 
+Besides, using the [issue tracker](https://github.com/uwjunqi/Tensor-Train-Neural-Network/issues), feel free to contact at <jqi41@gatech.edu>. 
 
 
 ## Paper Citation:
 
 ### Note that implementation of the PyTorch codes are not totally the same as the setups of [1] Qi et al. ICASSP 2020 and [2] Qi et al.TASLP
 This repo is releaed for general use and also included some image TTN examples. 
-If your are intested on reproducing the results of [1] and [2] please contact. (jqi41 at gatech dot edu)
+If your are intested on reproducing the results of [1] and [2] please contact  at <jqi41@gatech.edu>. 
 
 
 If you use the codes for your research work, please consider cite the following paper:
