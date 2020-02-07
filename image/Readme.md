@@ -15,4 +15,16 @@ parser.add_argument('--save_model', default='tt_mnist.pt', help='Directory of th
 
 - Tensor-Train Autoencoder
 
-Related References
+- Related References
+
+{
+  @article{qi2020tensor,
+  title={Tensor-to-Vector Regression for Multi-Channel Speech Enhancement based on Tensor-Train Network},
+  author={Jun Qi, Hu Hu, Yannan Wang, Chao-Han Huck Yang, Sabato Marco Siniscalchi, Chin-Hui Lee},
+  journal={IEEE ICASSP},
+  volume={},
+  number={},
+  pages={},
+  year={2020},
+  publisher={IEEE}
+}
