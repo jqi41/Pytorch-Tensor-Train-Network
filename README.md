@@ -22,11 +22,11 @@ python setup.py install
 
 ## Tensor-Train Neural Network for Image Processing
 
-- DNN AE result
+- TTN AE result
 
 ![img](https://github.com/uwjunqi/Tensor-Train-Neural-Network/blob/master/image/ttn.png)
 
-- TTN AE result
+- DNN AE result
 
 ![img](https://github.com/uwjunqi/Tensor-Train-Neural-Network/blob/master/image/ae_results.png)
 
