@@ -24,11 +24,11 @@ python setup.py install
 
 - DNN AE result
 
-![img](https://github.com/uwjunqi/Tensor-Train-Neural-Network/blob/master/image/ttn_results.png)
+![img](https://github.com/uwjunqi/Tensor-Train-Neural-Network/blob/master/image/ttn.png)
 
 - TTN AE result
 
-![img](https://github.com/uwjunqi/Tensor-Train-Neural-Network/blob/master/image/ae_result.png)
+![img](https://github.com/uwjunqi/Tensor-Train-Neural-Network/blob/master/image/ae_results.png)
 
 ```
 cd image
