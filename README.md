@@ -22,11 +22,11 @@ python setup.py install
 
 ## Tensor-Train Neural Network for Image Processing
 
-- TTN Autoencoder results
+- DNN AE result
 
 ![img](https://github.com/uwjunqi/Tensor-Train-Neural-Network/blob/master/image/ttn.png)
 
-- DNN Autoencoder results
+- TTN AE result
 
 ![img](https://github.com/uwjunqi/Tensor-Train-Neural-Network/blob/master/image/ae_results.png)
 
@@ -56,7 +56,7 @@ Besides, using the [issue tracker](https://github.com/uwjunqi/Tensor-Train-Neura
 
 ## Paper Citation:
 
-### Note this is not an official implement of [1] Qi et al. ICASSP 2020 and [2] Qi et al.TASLP
+### Note that implementation of the PyTorch codes are not totally the same as the setups of [1] Qi et al. ICASSP 2020 and [2] Qi et al.TASLP
 This repo is releaed for general use and also included some image TTN examples. 
 If your are intested on reproducing the results of [1] and [2] please contact. (jqi41 at gatech dot edu)
 
@@ -95,6 +95,3 @@ https://arxiv.org/abs/2002.00544
   publisher={IEEE}
 }
 ```
-
-
-
