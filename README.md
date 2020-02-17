@@ -61,7 +61,7 @@ This repo is releaed for general use and also included some image TTN examples.
 If your are intested on reproducing the results of [1] and [2] please contact. (jqi41 at gatech dot edu)
 
 
-If you use the codes for your research work, please consider cite the following paper:
+If you use the codes for your research work, please consider cite the following papers:
 
 [1] Jun Qi, Hu Hu, Yannan Wang, Chao-Han Huck Yang, Sabato Marco Siniscalchi, Chin-Hui Lee, "Tensor-to-Vector Regression for Multi-Channel Speech Enhancement based on Tensor-Train Network,” in Proc. IEEE Intl. Conf. on Acoustic, Speech, and Signal Processing (ICASSP), Barcelona, Spain, 2020. 
 
