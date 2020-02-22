@@ -57,13 +57,13 @@ Besides, using the [issue tracker](https://github.com/uwjunqi/Tensor-Train-Neura
 ## Paper Citation:
 
 ### Note that the implementation of the PyTorch codes are not totally the same as our Tensorflow codes for the experimental setups in [1] Qi et al. ICASSP 2020 and [2] Qi et al.TASLP. 
-This repo is releaed for general use and also included some image TTN examples. 
-If your are intested on reproducing the results of [1] and [2] please contact. (jqi41 at gatech dot edu)
+This repo is released for general use and also included some image TTN examples. 
+If you are interested on reproducing the results of [1] and [2] please contact. (jqi41 at gatech dot edu)
 
 
-If you use the codes for your research work, please consider cite the following papers:
+If you use the codes for your research work, please consider citing the following papers:
 
-[1] Jun Qi, Hu Hu, Yannan Wang, Chao-Han Huck Yang, Sabato Marco Siniscalchi, Chin-Hui Lee, "Tensor-to-Vector Regression for Multi-Channel Speech Enhancement based on Tensor-Train Network,” in Proc. IEEE Intl. Conf. on Acoustic, Speech, and Signal Processing (ICASSP), Barcelona, Spain, 2020. 
+[1] Jun Qi, Hu Hu, Yannan Wang, Chao-Han Huck Yang, Sabato Marco Siniscalchi, Chin-Hui Lee, "Tensor-to-Vector Regression for Multi-Channel Speech Enhancement based on Tensor-Train Network,” in Proc. IEEE Intl. Conf. on Acoustics, Speech, and Signal Processing (ICASSP), Barcelona, Spain, 2020. 
 
 https://arxiv.org/abs/2002.00544
 
@@ -80,7 +80,7 @@ https://arxiv.org/abs/2002.00544
   publisher={IEEE}
 }
 ```
-[2] Jun Qi, Jun Du, Sabato Marco Siniscalchi, Chin-Hui Lee, "A Theory on Deep Neural Network based Vector-to-Vector Regression with an Illustration of Its Expressive Power in Speech Enhancement", in IEEE/ACM Transactions on Audio, Speech and Language Processing (TASLP), Vol 27 ,  no. 12, pp. 1932-1943, Dec 2019. 
+[2] Jun Qi, Jun Du, Sabato Marco Siniscalchi, Chin-Hui Lee, "A Theory on Deep Neural Network-based Vector-to-Vector Regression with an Illustration of Its Expressive Power in Speech Enhancement," in IEEE/ACM Transactions on Audio, Speech and Language Processing (TASLP), Vol 27 ,  no. 12, pp. 1932-1943, Dec 2019. 
 
 ```
   {
