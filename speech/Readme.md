@@ -13,7 +13,7 @@ Clean testing data:  clean_testset_wav.zip (147.1Mb)
 
 ### 3. Feature extractiong: 
 ```
-python extract_feat.py --clean_list_fn=${clean_data_scp} --noise_list_fn=${noise_data_scp} --data_fn={feat_fn}
+python extract_feat.py --clean_list_fn=${clean_data_scp} --noise_list_fn=${noise_data_scp} --data_fn=${feat_fn}
 ```
 
 ### 4. Model traning: 
