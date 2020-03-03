@@ -18,6 +18,16 @@ python extract_feat.py.
 
 ### 4. Model traning: 
 ```
-python train_tt.py (Tensor-Train model) 
-python train_dnn.py (DNN model)
+python train_tt.py (Tensor-Train) 
+python train_dnn.py (DNN)
+```
+
+### 5. Synthesizing enhanced speech
+```
+python synthesis_dnn.py (DNN) or synthesis_tt.py (Tensor-Train)
+```
+
+### 6. Attaining PESQ scores
+```
+python pesq_metric.py 
 ```
