@@ -13,7 +13,7 @@ Clean testing data:  clean_testset_wav.zip (147.1Mb)
 
 ### 3. Feature extractiong: 
 ```
-python extract_feat.py. 
+python extract_feat.py --clean_list_fn=${clean_data_scp} --noise_list_fn=${noise_data_scp} --data_fn={feat_fn}
 ```
 
 ### 4. Model traning: 
@@ -29,5 +29,5 @@ python synthesis_dnn.py (DNN) or synthesis_tt.py (Tensor-Train)
 
 ### 6. Attaining PESQ scores
 ```
-python pesq_metric.py 
+python pesq_metric.py --data_enhanced_scp=$enhanced_scp --data_clean_scp=$clean_data_scp
 ```
