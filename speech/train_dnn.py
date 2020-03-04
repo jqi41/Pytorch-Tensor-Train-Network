@@ -57,7 +57,7 @@ class dnn_model(nn.Module):
             self.Linear2.weight.div_(torch.norm(self.Linear2.weight, dim=1, keepdim=True))
             self.Linear3.weight.div_(torch.norm(self.Linear3.weight, dim=1, keepdim=True))
             self.Linear4.weight.div_(torch.norm(self.Linear4.weight, dim=1, keepdim=True))
-            self.Linear5.weight.div_(torch.norm(self.Linear5.weight, dim=0, keepdim=True))
+            #self.Linear5.weight.div_(torch.norm(self.Linear5.weight, dim=0, keepdim=True))
 
     def forward(self, inputs):
         out = F.relu(self.Linear1(inputs))
