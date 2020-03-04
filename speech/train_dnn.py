@@ -51,6 +51,13 @@ class dnn_model(nn.Module):
         self.Linear3 = nn.Linear(hidden_layers[1], hidden_layers[2])
         self.Linear4 = nn.Linear(hidden_layers[2], hidden_layers[3])
         self.Linear5 = nn.Linear(hidden_layers[3], output_dim)
+        
+        with torch.no_grad():
+            self.Linear1.weight.div_(torch.norm(self.Linear1.weight, dim=1, keepdim=True))
+            self.Linear2.weight.div_(torch.norm(self.Linear2.weight, dim=1, keepdim=True))
+            self.Linear3.weight.div_(torch.norm(self.Linear3.weight, dim=1, keepdim=True))
+            self.Linear4.weight.div_(torch.norm(self.Linear4.weight, dim=1, keepdim=True))
+            self.Linear5.weight.div_(torch.norm(self.Linear5.weight, dim=0, keepdim=True))
 
     def forward(self, inputs):
         out = F.relu(self.Linear1(inputs))
