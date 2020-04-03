@@ -17,6 +17,7 @@ parser.add_argument('--save_model', default='tt_mnist.pt', help='Directory of th
 
 - Related References
 
+``
 {
   @article{qi2020tensor,
   title={Tensor-to-Vector Regression for Multi-Channel Speech Enhancement based on Tensor-Train Network},
@@ -28,3 +29,4 @@ parser.add_argument('--save_model', default='tt_mnist.pt', help='Directory of th
   year={2020},
   publisher={IEEE}
 }
+``
