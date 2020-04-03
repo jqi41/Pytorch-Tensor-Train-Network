@@ -1,6 +1,6 @@
 Testing Tensor-Train Neural Network on MNIST dataset. 
 
-`$python train_tt_image.py --input_tensor [7, 4, 7, 4] --hidden_tensors [[8, 4, 8, 4], [8, 4, 8, 4], [8, 4, 8, 8]]`
+`$ python train_tt_image.py --input_tensor [7, 4, 7, 4] --hidden_tensors [[8, 4, 8, 4], [8, 4, 8, 4], [8, 4, 8, 8]]`
 
 ```
 parser.add_argument('', default=200, help='Mini-batch size')
