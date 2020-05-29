@@ -73,9 +73,7 @@ https://arxiv.org/abs/2002.00544
   title={Tensor-to-Vector Regression for Multi-Channel Speech Enhancement based on Tensor-Train Network},
   author={Jun Qi, Hu Hu, Yannan Wang, Chao-Han Huck Yang, Sabato Marco Siniscalchi, Chin-Hui Lee},
   journal={IEEE ICASSP},
-  volume={},
-  number={},
-  pages={},
+  pages={7504–7508},
   year={2020},
   publisher={IEEE}
 }
