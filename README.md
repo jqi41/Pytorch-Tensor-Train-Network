@@ -56,7 +56,7 @@ Besides, using the [issue tracker](https://github.com/uwjunqi/Tensor-Train-Neura
 
 ## Paper Citation:
 
-### Note that the implementation of the PyTorch codes are not totally the same as our Tensorflow codes for the experimental setups in [1] Qi et al. ICASSP 2020 and [2] Qi et al.TASLP. 
+### Note that the implementation of the PyTorch codes are not totally the same as our Tensorflow codes for the experimental setups in [1] Qi et al. ICASSP 2020 and [2] Qi et al.TSP. 
 This repo is released for general use and also included some image TTN examples. 
 If you are interested on reproducing the results of [1] and [2] please contact. (jqi41 at gatech dot edu)
 
@@ -64,32 +64,6 @@ If you are interested on reproducing the results of [1] and [2] please contact. 
 If you use the codes for your research work, please consider citing the following papers:
 
 [1] Jun Qi, Hu Hu, Yannan Wang, Chao-Han Huck Yang, Sabato Marco Siniscalchi, Chin-Hui Lee, "Tensor-to-Vector Regression for Multi-Channel Speech Enhancement based on Tensor-Train Network,” in Proc. IEEE Intl. Conf. on Acoustics, Speech, and Signal Processing (ICASSP), Barcelona, Spain, 2020. 
-
 https://arxiv.org/abs/2002.00544
 
-```
-{
-  @article{qi2020tensor,
-  title={Tensor-to-Vector Regression for Multi-Channel Speech Enhancement based on Tensor-Train Network},
-  author={Jun Qi, Hu Hu, Yannan Wang, Chao-Han Huck Yang, Sabato Marco Siniscalchi, Chin-Hui Lee},
-  journal={IEEE ICASSP},
-  pages={7504–7508},
-  year={2020},
-  publisher={IEEE}
-}
-```
-[2] Jun Qi, Jun Du, Sabato Marco Siniscalchi, Chin-Hui Lee, "A Theory on Deep Neural Network-based Vector-to-Vector Regression with an Illustration of Its Expressive Power in Speech Enhancement," in IEEE/ACM Transactions on Audio, Speech and Language Processing (TASLP), Vol 27 ,  no. 12, pp. 1932-1943, Dec 2019. 
-
-```
-  {
-  @article{qi2019theory,
-  title={A Theory on Deep Neural Network Based Vector-to-Vector Regression With an Illustration of Its Expressive Power in Speech Enhancement},
-  author={Qi, Jun and Du, Jun and Siniscalchi, Sabato Marco and Lee, Chin-Hui},
-  journal={IEEE/ACM Transactions on Audio, Speech, and Language Processing},
-  volume={27},
-  number={12},
-  pages={1932--1943},
-  year={2019},
-  publisher={IEEE}
-}
-```
+[2] Jun Qi, Xiaoli Ma, Sabato Marco Siniscalchi, Chin-Hui Lee, "Upper Bounding Mean Absolute Errors for Deep Tensor Regression Based on Tensor-Train Networks," submit to IEEE Transactions on Signal Processing (TSP). 
