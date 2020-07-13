@@ -70,4 +70,4 @@ https://arxiv.org/abs/2002.00544
 
 [3] Novikov, Alexander, et al. "Tensorizing neural networks." Advances in neural information processing systems. 2015.
 
-[4] Reference Report Novikov et al. [T3F](https://github.com/Bihaqo/t3f) Tensor Train Decomposition on TensorFlow (T3F), JMLR 2020, http://jmlr.org/papers/v21/18-008.html
+[4] Reference [Report](https://arxiv.org/abs/1801.01928v1) Novikov et al. [T3F](https://github.com/Bihaqo/t3f) Tensor Train Decomposition on TensorFlow (T3F), JMLR 2020, http://jmlr.org/papers/v21/18-008.html
