@@ -67,3 +67,5 @@ If you use the codes for your research work, please consider citing the followin
 https://arxiv.org/abs/2002.00544
 
 [2] Jun Qi, Xiaoli Ma, Sabato Marco Siniscalchi, Chin-Hui Lee, "Upper Bounding Mean Absolute Errors for Deep Tensor Regression Based on Tensor-Train Networks," submit to IEEE Transactions on Signal Processing (TSP). 
+
+[3] Reference Report Novikov et al. [T3F](https://github.com/Bihaqo/t3f)
