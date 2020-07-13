@@ -56,7 +56,7 @@ Besides, using the [issue tracker](https://github.com/uwjunqi/Tensor-Train-Neura
 
 ## Paper Citation:
 
-### Note that the implementation of the PyTorch codes are not totally the same as our Tensorflow codes for the experimental setups in [1] Qi et al. ICASSP 2020 and [2] Qi et al.TSP. 
+### Note that the implementation of the PyTorch codes are not totally the same as our Tensorflow codes for the experimental setups in [1] Qi et al. ICASSP 2020 and [2] Qi et al.TSP. Parts of Pytorch backbone are initialized and based on the T3F project. We sincerely thank the authors.
 This repo is released for general use and also included some image TTN examples. 
 If you are interested on reproducing the results of [1] and [2] please contact. (jqi41 at gatech dot edu)
 
