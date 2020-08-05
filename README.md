@@ -56,18 +56,19 @@ Besides, using the [issue tracker](https://github.com/uwjunqi/Tensor-Train-Neura
 
 ## Paper Citation:
 
-### Note that the implementation of the PyTorch codes are not totally the same as our Tensorflow codes for the experimental setups in [1] Qi et al. ICASSP 2020 and [2] Qi et al.TSP. Parts of Pytorch backbone are initialized and based on the T3F project [3, 4]. We sincerely thank the authors.
+### Note that the implementation of the PyTorch codes are not totally the same as our Tensorflow codes for the experimental setups in [2] Qi et al. ICASSP 2020 and [3] Qi et al. Interspeech 2020. Parts of Pytorch backbone are initialized and based on the T3F project. We sincerely thank the authors.
 This repo is released for general use and also included some image TTN examples. 
-If you are interested on reproducing the results of [1] and [2] please contact. (jqi41 at gatech dot edu)
-
+If you are interested on reproducing the results of [2] and [3] please contact. (jqi41 at gatech dot edu)
 
 If you use the codes for your research work, please consider citing the following papers:
 
-[1] Jun Qi, Hu Hu, Yannan Wang, Chao-Han Huck Yang, Sabato Marco Siniscalchi, Chin-Hui Lee, "Tensor-to-Vector Regression for Multi-Channel Speech Enhancement based on Tensor-Train Network,” in Proc. IEEE Intl. Conf. on Acoustics, Speech, and Signal Processing (ICASSP), Barcelona, Spain, 2020. 
+[1] Jun Qi, Xiaoli Ma, Sabato Marco Siniscalchi, Chin-Hui Lee, "Upper Bounding Mean Absolute Errors for Deep Tensor Regression Based on Tensor-Train Networks," submit to IEEE Transactions on Signal Processing (TSP). 
+
+[2] Jun Qi, Hu Hu, Yannan Wang, Chao-Han Huck Yang, Sabato Marco Siniscalchi, Chin-Hui Lee, "Tensor-to-Vector Regression for Multi-Channel Speech Enhancement based on Tensor-Train Network,” in Proc. IEEE Intl. Conf. on Acoustics, Speech, and Signal Processing (ICASSP), Barcelona, Spain, 2020. 
 https://arxiv.org/abs/2002.00544
 
-[2] Jun Qi, Xiaoli Ma, Sabato Marco Siniscalchi, Chin-Hui Lee, "Upper Bounding Mean Absolute Errors for Deep Tensor Regression Based on Tensor-Train Networks," submit to IEEE Transactions on Signal Processing (TSP). 
+[3] Jun Qi, Hu Hu, Huck Yang, Sabato Marco Siniscalchi, Chin-Hui Lee, “Exploring Deep Hybrid Tensor-to-Vector Network Architectures for Regression Based Speech Enhancement,”  in Proc. Annual Conference of the International Speech Communication Association (INTERSPEECH), Shanghai, China, 2020. 
 
-[3] Novikov, Alexander, et al. "Tensorizing neural networks." Advances in neural information processing systems. 2015.
+## Reference:
 
-[4] Reference [Arxiv Report](https://arxiv.org/abs/1801.01928v1) Novikov et al. [T3F](https://github.com/Bihaqo/t3f) Tensor Train Decomposition on TensorFlow (T3F), JMLR 2020, http://jmlr.org/papers/v21/18-008.html
+[Arxiv Report](https://arxiv.org/abs/1801.01928v1) Novikov et al. [T3F](https://github.com/Bihaqo/t3f) Tensor Train Decomposition on TensorFlow (T3F), JMLR 2020, http://jmlr.org/papers/v21/18-008.html
