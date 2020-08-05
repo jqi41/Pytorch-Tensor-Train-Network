@@ -67,7 +67,7 @@ If you use the codes for your research work, please consider citing the followin
 [2] Jun Qi, Hu Hu, Yannan Wang, Chao-Han Huck Yang, Sabato Marco Siniscalchi, Chin-Hui Lee, "Tensor-to-Vector Regression for Multi-Channel Speech Enhancement based on Tensor-Train Network,” in Proc. IEEE Intl. Conf. on Acoustics, Speech, and Signal Processing (ICASSP), Barcelona, Spain, 2020. 
 https://arxiv.org/abs/2002.00544
 
-[3] Jun Qi, Hu Hu, Huck Yang, Sabato Marco Siniscalchi, Chin-Hui Lee, “Exploring Deep Hybrid Tensor-to-Vector Network Architectures for Regression Based Speech Enhancement,”  in Proc. Annual Conference of the International Speech Communication Association (INTERSPEECH), Shanghai, China, 2020. https://arXiv:2007.13024v2
+[3] Jun Qi, Hu Hu, Huck Yang, Sabato Marco Siniscalchi, Chin-Hui Lee, “Exploring Deep Hybrid Tensor-to-Vector Network Architectures for Regression Based Speech Enhancement,”  in Proc. Annual Conference of the International Speech Communication Association (INTERSPEECH), Shanghai, China, 2020. https://arxiv.org/abs/2007.13024v2
 
 ## Reference:
 
