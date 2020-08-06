@@ -40,7 +40,7 @@ parser.add_argument('--frame_size', default=512, help='Frame size', type=int)
 parser.add_argument('--overlap', default=256, help='Overlapping rate between frames', type=int)
 parser.add_argument('--fft_size', default=512, help='N for FFT computation', type=int)
 parser.add_argument('--sample_rate', default=16000, help='Sampling rate', type=int)
-parser.add_argument('--max_data_len', default=2000000, help='Maximum data length', type=int)
+parser.add_argument('--max_data_len', default=100000, help='Maximum data length', type=int)
 parser.add_argument('--framewidth', default=2, help='Length of context frames')
 parser.add_argument('--tt_rank', default=[1, 3, 1], help='tensor-train rank')
 parser.add_argument('--hidden_tensors', default=[[80, 100], [80, 100], [80, 100], [80, 100], [160, 100]], help='hidden tensors')
@@ -64,11 +64,11 @@ if __name__ == "__main__":
             filename = line.split('/')[-1][:-1]
             print(filename)
             y, sr=librosa.load(line[:-1], sr=args.sample_rate)
-            training_data = np.empty((args.max_data_len, fbin, args.framewidth*2 + 1)) # For Noisy dataß
+            training_data = np.empty((args.max_data_len, fbin-1, args.framewidth*2 + 1)) # For Noisy dataß
             Sxx, phase, mean, std = make_spectrum_phase(y, args.frame_size, args.overlap, args.fft_size)
             idx = 0     
             for i in range(args.framewidth, Sxx.shape[1] - args.framewidth): # 5 Frmae
-                training_data[idx, :, :] = Sxx[:, i-args.framewidth : i+args.framewidth+1] # For Noisy data
+                training_data[idx, :, :] = Sxx[1:, i-args.framewidth : i+args.framewidth+1] # For Noisy data
                 idx = idx + 1
 
             X_train = training_data[:idx, :, :]
@@ -76,7 +76,7 @@ if __name__ == "__main__":
             predict = model.forward(torch.tensor(X_train).type(dtype))
             count=0
             for i in range(args.framewidth, Sxx.shape[1] - args.framewidth):
-                Sxx[:,i] = predict[count].cpu().detach().numpy()
+                Sxx[1:,i] = predict[count].cpu().detach().numpy()
                 count+=1
             # # The un-enhanced part of spec should be un-normalized
             Sxx[:, :args.framewidth] = (Sxx[:, :args.framewidth] * std) + mean
