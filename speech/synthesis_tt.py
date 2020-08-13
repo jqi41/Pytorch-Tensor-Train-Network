@@ -42,12 +42,13 @@ parser.add_argument('--fft_size', default=512, help='N for FFT computation', typ
 parser.add_argument('--sample_rate', default=16000, help='Sampling rate', type=int)
 parser.add_argument('--max_data_len', default=100000, help='Maximum data length', type=int)
 parser.add_argument('--framewidth', default=2, help='Length of context frames')
-parser.add_argument('--tt_rank', default=[1, 3, 1], help='tensor-train rank')
-parser.add_argument('--hidden_tensors', default=[[80, 100], [80, 100], [80, 100], [80, 100], [160, 100]], help='hidden tensors')
+parser.add_argument('--tt_rank', default=[1, 2, 2, 2, 1], help='tensor-train rank')
+parser.add_argument('--hidden_tensors', default=[[8, 4, 8, 4], [8, 4, 8, 4], [8, 4, 8, 8]], help='hidden tensors')
+#parser.add_argument('--hidden_tensors', default=[[80, 100], [80, 100], [80, 100], [80, 100], [160, 100]], help='hidden tensors')
 parser.add_argument('--input_tensor', default=[5, 257], help='input tensor')
 parser.add_argument('--output_dim', default=257, type=int, help='output dimension')
 parser.add_argument('--noise_list_fn', metavar='DIR', default='test.scp', help='A list of noisy wave files')
-parser.add_argument('--load_model_path', default='exp//tt_models//model_5_0.hdf5', help='The path to the saved model')
+parser.add_argument('--load_model_path', default='exp//tt_models//model_10.hdf5', help='The path to the saved model')
 
 args = parser.parse_args()
 
