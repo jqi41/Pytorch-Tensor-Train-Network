@@ -62,12 +62,10 @@ If you are interested on reproducing the results of [2] and [3] please contact. 
 
 If you use the codes for your research work, please consider citing the following papers:
 
-[1] Jun Qi, Xiaoli Ma, Sabato Marco Siniscalchi, Chin-Hui Lee, "Upper Bounding Mean Absolute Errors for Deep Tensor Regression Based on Tensor-Train Networks," submit to IEEE Transactions on Signal Processing (TSP). 
-
-[2] Jun Qi, Hu Hu, Yannan Wang, Chao-Han Huck Yang, Sabato Marco Siniscalchi, Chin-Hui Lee, "Tensor-to-Vector Regression for Multi-Channel Speech Enhancement based on Tensor-Train Network,” in Proc. IEEE Intl. Conf. on Acoustics, Speech, and Signal Processing (ICASSP), Barcelona, Spain, 2020. 
+[1] Jun Qi, Hu Hu, Yannan Wang, Chao-Han Huck Yang, Sabato Marco Siniscalchi, Chin-Hui Lee, "Tensor-to-Vector Regression for Multi-Channel Speech Enhancement based on Tensor-Train Network,” in Proc. IEEE Intl. Conf. on Acoustics, Speech, and Signal Processing (ICASSP), Barcelona, Spain, 2020. 
 https://arxiv.org/abs/2002.00544
 
-[3] Jun Qi, Hu Hu, Huck Yang, Sabato Marco Siniscalchi, Chin-Hui Lee, “Exploring Deep Hybrid Tensor-to-Vector Network Architectures for Regression Based Speech Enhancement,”  in Proc. Annual Conference of the International Speech Communication Association (INTERSPEECH), Shanghai, China, 2020. https://arxiv.org/abs/2007.13024v2
+[2] Jun Qi, Hu Hu, Huck Yang, Sabato Marco Siniscalchi, Chin-Hui Lee, “Exploring Deep Hybrid Tensor-to-Vector Network Architectures for Regression Based Speech Enhancement,”  in Proc. Annual Conference of the International Speech Communication Association (INTERSPEECH), Shanghai, China, 2020. https://arxiv.org/abs/2007.13024v2
 
 ## Reference:
 
