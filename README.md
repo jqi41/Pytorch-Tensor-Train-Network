@@ -1,4 +1,4 @@
-# TC: Tensor-Train-Neural-Network
+# Pytorch-Tensor-Train-Network
 
 The package particularly aims at Tensor Decompositions to Deep Neural Networks, particularly for Tensor-to-Vector Regression tasks, e.g., Speech and Image Enhancement. 
 
