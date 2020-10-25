@@ -1,6 +1,6 @@
 # Pytorch-Tensor-Train-Network
 
-The package particularly aims to provide a Pytorch implementation for Tensor Decompositions to Deep Neural Networks, particularly for Tensor-to-Vector Regression tasks, e.g., Speech and Image Enhancement. 
+The package mainly aims to provide a Pytorch implementation for Tensor Decompositions to Deep Neural Networks, particularly for Tensor-to-Vector Regression tasks, e.g., Speech and Image Enhancement. 
 
 ```
 git clone https://github.com/uwjunqi/Pytorch-Tensor-Train-Network.git
@@ -56,9 +56,9 @@ Besides, using the [issue tracker](https://github.com/uwjunqi/Tensor-Train-Neura
 
 ## Paper Citation:
 
-### Note that the implementation of the PyTorch codes are not totally the same as our Tensorflow codes for the experimental setups in [2] Qi et al. ICASSP 2020 and [3] Qi et al. Interspeech 2020. Parts of Pytorch backbone are initialized and based on the T3F project. We sincerely thank the authors.
+### Note that the implementation of the PyTorch code is not totally the same as our Tensorflow code for the experimental setups in [1] Qi et al. ICASSP 2020 and [2] Qi et al. Interspeech 2020. Parts of Pytorch backbone are initialized and based on the T3F project. We sincerely thank the authors.
 This repo is released for general use and also included some image TTN examples. 
-If you are interested on reproducing the results of [2] and [3] please contact. (jqi41 at gatech dot edu)
+If you are interested on reproducing the results of [1] and [2] please contact. (jqi41 at gatech dot edu)
 
 If you use the codes for your research work, please consider citing the following papers:
 
@@ -69,4 +69,8 @@ https://arxiv.org/abs/2002.00544
 
 ## Reference:
 
-[Arxiv Report](https://arxiv.org/abs/1801.01928v1) Novikov et al. [T3F](https://github.com/Bihaqo/t3f) Tensor Train Decomposition on TensorFlow (T3F), JMLR 2020, http://jmlr.org/papers/v21/18-008.html
+We also borrow some header files from the open-source project and the recently released format journal version [4] from Novikov et al.
+
+[3] Novikov, A., Podoprikhin, D., Osokin, A., & Vetrov, D. P. (2015). Tensorizing neural networks. In Advances in neural information processing systems (pp. 442-450).
+
+[4] Novikov et al. [T3F](https://github.com/Bihaqo/t3f) Tensor Train Decomposition on TensorFlow (T3F), JMLR 2020, http://jmlr.org/papers/v21/18-008.html
