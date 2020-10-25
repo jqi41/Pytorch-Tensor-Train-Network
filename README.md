@@ -1,6 +1,6 @@
 # Pytorch-Tensor-Train-Network
 
-The package particularly aims to provide a Pytorch implementation Tensor Decompositions to Deep Neural Networks, particularly for Tensor-to-Vector Regression tasks, e.g., Speech and Image Enhancement. 
+The package particularly aims to provide a Pytorch implementation for Tensor Decompositions to Deep Neural Networks, particularly for Tensor-to-Vector Regression tasks, e.g., Speech and Image Enhancement. 
 
 ```
 git clone https://github.com/uwjunqi/Pytorch-Tensor-Train-Network.git
