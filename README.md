@@ -69,7 +69,7 @@ https://arxiv.org/abs/2002.00544
 
 ## Reference:
 
-We also borrow some c header files from the open-source project and the recently released format journal version [4] from Novikov et al. Please also check their works as below.
+We also borrow some c header files from the open-source project and the recently released journal version [4] from Novikov et al. Please also check their works as below.
 
 [3] Novikov, A., Podoprikhin, D., Osokin, A., & Vetrov, D. P. (2015). Tensorizing neural networks. In Advances in neural information processing systems (pp. 442-450).
 
