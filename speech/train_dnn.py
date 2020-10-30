@@ -12,21 +12,19 @@ import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F 
 
-
 seed = 7 
 np.random.seed(seed)
 torch.manual_seed(seed)
 dtype = torch.cuda.FloatTensor if torch.cuda.is_available() else torch.FloatTensor
-device = torch.device("cuda:0, 1" if torch.cuda.is_available() else "cpu")
+device = torch.device("cuda:0,1" if torch.cuda.is_available() else "cpu")
 
 parser = argparse.ArgumentParser(description='Training a tensor-train neural network...')
 parser.add_argument('--batch_size', default=200, help='Mini-batch size')
-parser.add_argument('--input_dim', default=3*257)
-parser.add_argument('--output_dim', default=257)
+parser.add_argument('--input_dim', default=17*256)
+parser.add_argument('--output_dim', default=256)
 parser.add_argument('--lr', default=0.001, help='Learning rate')
 parser.add_argument('--hidden_layers', default=[1024, 1024, 1024, 2048])
-parser.add_argument('--test_data_path', metavar='DIR', default='exp//test_feats//feats_0.h5', help='Feature container in h5 format')
-parser.add_argument('--train_data_path', metavar='DIR', default='exp//train_feats//feats_', help='Feature container in h5 format')
+parser.add_argument('--data_path', metavar='DIR', default='exp//test_feats//feats_0.h5', help='Feature container in h5 format')
 parser.add_argument('--save_model_path', default='model_tt.hdf5', help='The path to the saved model')
 parser.add_argument('--n_epochs', default=100, help='The total number of epochs', type=int)
 parser.add_argument('--n_data', default=7, help='How many datasets do we need?')
@@ -86,18 +84,17 @@ if __name__ == "__main__":
     #optimizer = optim.SGD(model.parameters(), lr=float(args.lr), momentum=0.2)
 
     print('Training the Deep Neural Network...')
-    test_data = h5py.File(args.test_data_path)
-    test_clean = test_data['clean']
-    test_noise = test_data['noise']
+    test_data = h5py.File(args.data_path)
+    test_clean = test_data['test_clean']
+    test_noise = test_data['test_noisy']
     nframe_test_clean, _ = test_clean.shape 
 
     for epoch in range(args.n_epochs):
         total_loss_train = 0
         total_loss_test = 0
         for data_idx in range(int(args.n_data)): 
-            train_data_fn = h5py.File(args.train_data_path + str(data_idx) + '.h5')
-            train_clean = train_data_fn['clean']
-            train_noise = train_data_fn['noise']
+            train_clean = test_data['train_clean']
+            train_noise = test_data['train_noisy']
 
             nframe_train_noise, input_dims = train_noise.shape 
             n_batch_train = int(nframe_train_noise / args.batch_size)
@@ -130,7 +127,7 @@ if __name__ == "__main__":
         print('Epoch: {}, total_loss: {}  |   test_loss: {}'.format(epoch, total_loss_train, total_loss_test))
         losses_train.append(total_loss_train)
         losses_test.append(total_loss_test)
-        model_path = "exp/dnn_models/model_" + str(epoch) + str(".hdf5")
+        model_path = "dnn_model_" + str(epoch) + str(".hdf5")
         torch.save({ 
             'epoch': epoch,
             'model_state_dict': model.state_dict(),

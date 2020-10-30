@@ -22,9 +22,9 @@ parser.add_argument('--sample_rate', default=16000, help='Sampling rate', type=i
 parser.add_argument('--max_data_len', default=500000, help='Maximum data length', type=int)
 parser.add_argument('--framewidth', default=8, help='Length of context frames')
 parser.add_argument('--is_tensor', default=0, help='Is tensor feature or not', type=int)
-parser.add_argument('--data_fn', metavar='DIR', default='data.h5', help='file for feature extraction')
-parser.add_argument('--noise_list_fn', metavar='DIR', default='lists//train_noise.scp', help='A list of clean wave files')
-parser.add_argument('--clean_list_fn', metavar='DIR', default='lists//train_clean.scp', help='A list of noisy wave files')
+parser.add_argument('--data_fn', metavar='DIR', default='feat_data.h5', help='file for feature extraction')
+parser.add_argument('--noise_list_fn', metavar='DIR', default='noisy.scp', help='A list of clean wave files')
+parser.add_argument('--clean_list_fn', metavar='DIR', default='clean.scp', help='A list of noisy wave files')
 # find ./data/noisy_trainset_56spk_wav -type f -name '*.wav' > noisy_list
 args = parser.parse_args()
 
