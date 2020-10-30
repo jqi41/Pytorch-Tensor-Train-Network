@@ -11,10 +11,10 @@ Clean testing data:  clean_testset_wav.zip (147.1Mb)
 put these unzip folders in `../se_data/`
 ### 2. Down-sampling the speech data from 48KHz to 16KHz. 
 ```python
-downsamply.py
+python downsample.py 
 ```
 ### 3. Feature extractiong: 
-```
+```python
 python extract_feat.py 
 ```
 
