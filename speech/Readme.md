@@ -8,18 +8,20 @@ Noisy testing data:  noisy_testset_wav.zip (162.6Mb)
 Clean training data: clean_trainset_56spk_wav.zip (4.442Gb)
 Clean testing data:  clean_testset_wav.zip (147.1Mb)
 ```
-
+put these unzip folders in `../se_data/`
 ### 2. Down-sampling the speech data from 48KHz to 16KHz. 
-
+```python
+downsamply.py
+```
 ### 3. Feature extractiong: 
 ```
-python extract_feat.py --clean_list_fn=${clean_data_scp} --noise_list_fn=${noise_data_scp} --data_fn=${feat_fn}
+python extract_feat.py 
 ```
 
 ### 4. Model traning: 
 ```
-python train_tt.py (Tensor-Train) 
-python train_dnn.py (DNN)
+python train_tt.py #(Tensor-Train) 
+python train_dnn.py --data_path your_h5 #(DNN)
 ```
 
 ### 5. Synthesizing enhanced speech
