@@ -6,11 +6,11 @@ import torch
 import torch.nn as nn 
 import torch.optim as optim
 
-#import tc
-from tc_cores import TensorTrain, _are_tt_cores_valid
-import tc_math 
-from tc_init import get_variables, glorot_initializer, he_initializer, lecun_initializer
-import tc_decomp
+import tc
+from tc.tc_cores import TensorTrain, _are_tt_cores_valid
+import tc.tc_math 
+from tc.tc_init import get_variables, glorot_initializer, he_initializer, lecun_initializer
+import tc.tc_decomp
 
 from torch.utils.data import TensorDataset, DataLoader 
 
@@ -53,7 +53,7 @@ class TTLinear(nn.Module):
     
     def forward(self, x):
         TensorTrain_W = TensorTrain(self.W_cores, self.tt_shape, self.tt_rank)
-        h = tc_math.matmul(x, TensorTrain_W, 'relu')
+        h = tc.tc_math.matmul(x, TensorTrain_W, 'relu')
        #if self.activation is not None:
        #     if self.activation in activations:
        #         if self.activation == 'sigmoid':
