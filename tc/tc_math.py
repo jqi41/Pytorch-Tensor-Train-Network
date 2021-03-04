@@ -3,13 +3,15 @@
 import numpy as np 
 import torch 
 import tc
-import tc.tc_init 
-from tc.tc_decomp import orthogonalize_tt_cores
-from tc.tc_cores import TensorTrain, TensorTrainBatch
-from tc.tc_utils import is_batch_broadcasting_possible, squeeze_batch_dim
+import tc_init 
+from tc_decomp import orthogonalize_tt_cores
+from tc_cores import TensorTrain, TensorTrainBatch
+from tc_utils import is_batch_broadcasting_possible, squeeze_batch_dim
 
 
-def tt_dense_matmul(tt_matrix_a, matrix_b):
+activations = ['relu', 'sigmoid', 'tanh', 'softmax', 'linear']
+
+def tt_dense_matmul(tt_matrix_a, matrix_b, activation=None):
     """Multiplies a TT-matrix by a regular matrix, returns a regular matrix.
     Args:
         tt_matrix_a: `TensorTrain` object containing a TT-matrix of size M x N
@@ -44,6 +46,19 @@ def tt_dense_matmul(tt_matrix_a, matrix_b):
             # (ik, ..., id-1, K, j0, ..., jk-2) x jk-1 x rank_k
             new_data_shape = (-1, a_raw_shape[1][core_idx-1], a_ranks[core_idx])
             data = data.reshape(new_data_shape)
+        if activation is not None:
+            if activation in activations:
+                if activation == 'sigmoid':
+                    data = torch.sigmoid(data)
+                elif activation == 'tanh':
+                    data = torch.tanh(data)
+                elif activation == 'relu':
+                    data = torch.relu(data)
+                elif activation == 'linear':
+                    data = data 
+            else:
+                raise ValueError('Unknown activation "%s", only %s and None \
+                    are supported'%(activation, activations))
     # At the end the shape of the data is (i0, ..., id-1) x K
     return data.reshape(int(a_shape[0]), int(b_shape[1]))
 
@@ -77,7 +92,7 @@ def transpose(tt_matrix):
         return TensorTrainBatch(transposed_tt_cores, transposed_shape, tt_ranks, batch_size)
 
 
-def dense_tt_matmul(matrix_a, tt_matrix_b):
+def dense_tt_matmul(matrix_a, tt_matrix_b, activation=None):
     """Multiplies a regular matrix by a TT-matrix, returns a regular matrix.
     Args:
         matrix_a: torch.tensor of size M x N
@@ -87,10 +102,10 @@ def dense_tt_matmul(matrix_a, tt_matrix_b):
     """
     a_t = matrix_a.t()
     b_t = transpose(tt_matrix_b)
-    return tt_dense_matmul(b_t, a_t).t()
+    return tt_dense_matmul(b_t, a_t, activation).t()
 
 
-def tt_tt_matmul(tt_matrix_a, tt_matrix_b):
+def tt_tt_matmul(tt_matrix_a, tt_matrix_b, activation):
     """Multiplies two TT-matrices and returns the TT-matrix of the result.
     Args:
         tt_matrix_a: `TensorTrain` or `TensorTrainBatch` object containing
@@ -154,6 +169,20 @@ def tt_tt_matmul(tt_matrix_a, tt_matrix_b):
         else:
             core_shape = (res_left_rank, left_mode, right_mode, res_right_rank)
         curr_res_core = curr_res_core.reshape(core_shape)
+        if activation is not None:
+            if activation in activations:
+                if activation == 'sigmoid':
+                    curr_res_core = torch.sigmoid(curr_res_core)
+                elif activation == 'tanh':
+                    curr_res_core = torch.tanh(curr_res_core)
+                elif activation == 'relu':
+                    curr_res_core = torch.relu(curr_res_core)
+                elif activation == 'linear':
+                    curr_res_core = curr_res_core
+            else:
+                raise ValueError('Unknown activation "%s", only %s and None \
+                    are supported'%(activation, activations))    
+    
         result_cores.append(curr_res_core)
 
     res_shape = (tt_matrix_a.get_raw_shape()[0], tt_matrix_b.get_raw_shape()[1])
@@ -167,7 +196,7 @@ def tt_tt_matmul(tt_matrix_a, tt_matrix_b):
 
 
 
-def matmul(a, b):
+def matmul(a, b, activation=None):
     """Multiplies two matrices that can be TT-, dense, or sparse.
     Note that multiplication of two TT-matrices returns a TT-matrix with much
     larger ranks.
@@ -182,11 +211,11 @@ def matmul(a, b):
         Otherwise, returns torch.Tensor of size M x P.
     """
     if isinstance(a, TensorTrain) and isinstance(b, TensorTrain):
-        return tt_tt_matmul(a, b)
+        return tt_tt_matmul(a, b, activation)
     elif isinstance(a, TensorTrain) and isinstance(b, torch.Tensor):
-        return tt_dense_matmul(a, b)
+        return tt_dense_matmul(a, b, activation)
     elif isinstance(a, torch.Tensor) and isinstance(b, TensorTrain):
-        return dense_tt_matmul(a, b)
+        return dense_tt_matmul(a, b, activation)
     else:
         raise ValueError('Argument types are not supported in matmul: %s x %s'%(a, b))
 
@@ -799,5 +828,5 @@ if __name__ == "__main__":
     tt1 = matrix_batch_with_random_cores(shape1, tt_rank=tt_rank, batch_size=batch_size)
     tt2 = matrix_batch_with_random_cores(shape2, tt_rank=tt_rank, batch_size=batch_size)
 
-    res = tt_tt_matmul(tt1, tt2)
+    res = tt_tt_matmul(tt1, tt2, 'relu')
     print(res)
