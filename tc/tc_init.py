@@ -4,7 +4,7 @@ import numpy as np
 import torch 
 from torch.nn import Parameter
 import tc 
-from tc.tc_cores import TensorTrain, TensorTrainBatch
+from tc_cores import TensorTrain, TensorTrainBatch
 
 torch.manual_seed(42)
 
