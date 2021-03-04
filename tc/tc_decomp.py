@@ -3,7 +3,7 @@
 import numpy as np 
 import torch 
 import tc
-from tc.tc_cores import TensorTrain, TensorTrainBatch
+from tc_cores import TensorTrain, TensorTrainBatch
 
 def to_tt_tensor(tens, max_tt_rank=10, epsilon=None):
     """
