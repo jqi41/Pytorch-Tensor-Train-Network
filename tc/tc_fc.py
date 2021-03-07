@@ -36,6 +36,8 @@ class TTLinear(nn.Module):
         self.activation = activation 
         self.init = init 
         self.tt_rank = tt_rank
+        
+        self.activation = activation 
 
         if self.init == 'glorot':
             initializer = glorot_initializer(self.tt_shape, tt_rank=tt_rank)
@@ -53,7 +55,7 @@ class TTLinear(nn.Module):
     
     def forward(self, x):
         TensorTrain_W = TensorTrain(self.W_cores, self.tt_shape, self.tt_rank)
-        h = tc.tc_math.matmul(x, TensorTrain_W, 'relu')
+        h = tc.tc_math.matmul(x, TensorTrain_W, activation=self.activation)
        #if self.activation is not None:
        #     if self.activation in activations:
        #         if self.activation == 'sigmoid':
