@@ -26,7 +26,7 @@ class TTLinear(nn.Module):
     for the tasks of feature selection or dimension reduction where the information 
     redudancy always exists. """
     def __init__(self, inp_modes, out_modes, tt_rank, init='glorot',
-                bias_init=0.1, activation='relu', **kwargs):
+                bias_init=0.1, activation='relu', outer=False, **kwargs):
         super(TTLinear, self).__init__()
         self.ndims = len(inp_modes)
         self.inp_modes = inp_modes 
@@ -38,6 +38,7 @@ class TTLinear(nn.Module):
         self.tt_rank = tt_rank
         
         self.activation = activation 
+        self.outer = outer
 
         if self.init == 'glorot':
             initializer = glorot_initializer(self.tt_shape, tt_rank=tt_rank)
@@ -56,19 +57,19 @@ class TTLinear(nn.Module):
     def forward(self, x):
         TensorTrain_W = TensorTrain(self.W_cores, self.tt_shape, self.tt_rank)
         h = tc.tc_math.matmul(x, TensorTrain_W, activation=self.activation)
-       #if self.activation is not None:
-       #     if self.activation in activations:
-       #         if self.activation == 'sigmoid':
-       #             h = torch.sigmoid(h)
-       #         elif self.activation == 'tanh':
-       #             h = torch.tanh(h)
-       #         elif self.activation == 'relu':
-       #             h = torch.relu(h)
-       #         elif self.activation == 'linear':
-       #             h = h 
-       #     else:
-       #         raise ValueError('Unknown activation "%s", only %s and None \
-       #             are supported'%(self.activation, activations))
+        if not self.activation and self.outer:
+            if self.activation in activations:
+                if self.activation == 'sigmoid':
+                    h = torch.sigmoid(h)
+                elif self.activation == 'tanh':
+                    h = torch.tanh(h)
+                elif self.activation == 'relu':
+                    h = torch.relu(h)
+                elif self.activation == 'linear':
+                    h = h 
+            else:
+                raise ValueError('Unknown activation "%s", only %s and None \
+                    are supported'%(self.activation, activations))
 
         return h
 
