@@ -3,11 +3,10 @@
 import numpy as np 
 import torch 
 import tc
-import tc.tc_init 
-from tc.tc_decomp import orthogonalize_tt_cores
-from tc.tc_cores import TensorTrain, TensorTrainBatch
-from tc.tc_utils import is_batch_broadcasting_possible, squeeze_batch_dim
-
+import tc_init 
+from tc_decomp import orthogonalize_tt_cores
+from tc_cores import TensorTrain, TensorTrainBatch
+from tc_utils import is_batch_broadcasting_possible, squeeze_batch_dim
 
 activations = ['relu', 'sigmoid', 'tanh', 'softmax', 'linear']
 
