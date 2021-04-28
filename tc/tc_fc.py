@@ -6,11 +6,11 @@ import torch
 import torch.nn as nn 
 import torch.optim as optim
 
-import tc
-from tc.tc_cores import TensorTrain, _are_tt_cores_valid
-import tc.tc_math 
-from tc.tc_init import get_variables, glorot_initializer, he_initializer, lecun_initializer
-import tc.tc_decomp
+#import tc
+from tc_cores import TensorTrain, _are_tt_cores_valid
+import tc_math 
+from tc_init import get_variables, glorot_initializer, he_initializer, lecun_initializer
+import tc_decomp
 
 from torch.utils.data import TensorDataset, DataLoader 
 
@@ -26,7 +26,7 @@ class TTLinear(nn.Module):
     for the tasks of feature selection or dimension reduction where the information 
     redudancy always exists. """
     def __init__(self, inp_modes, out_modes, tt_rank, init='glorot',
-                bias_init=0.1, activation='relu', outer=False, **kwargs):
+                bias_init=0.1, activation='relu', **kwargs):
         super(TTLinear, self).__init__()
         self.ndims = len(inp_modes)
         self.inp_modes = inp_modes 
@@ -36,9 +36,6 @@ class TTLinear(nn.Module):
         self.activation = activation 
         self.init = init 
         self.tt_rank = tt_rank
-        
-        self.activation = activation 
-        self.outer = outer
 
         if self.init == 'glorot':
             initializer = glorot_initializer(self.tt_shape, tt_rank=tt_rank)
@@ -51,27 +48,24 @@ class TTLinear(nn.Module):
 
         self.W_cores = get_variables(initializer)
         _are_tt_cores_valid(self.W_cores, self.tt_shape, self.tt_rank)
-     #   self.b = torch.nn.Parameter(torch.ones(1))
+        self.b = torch.nn.Parameter(torch.ones(1))
 
     
     def forward(self, x):
         TensorTrain_W = TensorTrain(self.W_cores, self.tt_shape, self.tt_rank)
-        if not self.outer:
-            h = tc.tc_math.matmul(x, TensorTrain_W, activation=self.activation)
-        else:
-            h = tc.tc_math.matmul(x, TensorTrain_W, activation='linear')
-        if self.outer:
-            if self.activation in activations:
-                if self.activation == 'sigmoid':
-                    h = torch.sigmoid(h)
-                elif self.activation == 'tanh':
-                    h = torch.tanh(h)
-                elif self.activation == 'relu':
-                    h = torch.relu(h)
-                elif self.activation == 'linear':
-                    h = h 
-            else:
-                raise ValueError('Unknown activation "%s", only %s and None \
+        h = tc_math.matmul(x, TensorTrain_W, 'relu')
+        if self.activation is not None:
+             if self.activation in activations:
+                 if self.activation == 'sigmoid':
+                     h = torch.sigmoid(h)
+                 elif self.activation == 'tanh':
+                     h = torch.tanh(h)
+                 elif self.activation == 'relu':
+                     h = torch.relu(h)
+                 elif self.activation == 'linear':
+                     h = h 
+             else:
+                 raise ValueError('Unknown activation "%s", only %s and None \
                     are supported'%(self.activation, activations))
 
         return h
@@ -97,7 +91,6 @@ class TTLinear(nn.Module):
     @property
     def name(self):
         return "TTLinear"
-
 
 if __name__=="__main__":
 
