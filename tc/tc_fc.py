@@ -7,10 +7,10 @@ import torch.nn as nn
 import torch.optim as optim
 
 import tc
-from tt.tc_cores import TensorTrain, _are_tt_cores_valid
-import tt.tc_math 
-from tt.tc_init import get_variables, glorot_initializer, he_initializer, lecun_initializer
-import tt.tc_decomp
+from tc.tc_cores import TensorTrain, _are_tt_cores_valid
+import tc.tc_math 
+from tc.tc_init import get_variables, glorot_initializer, he_initializer, lecun_initializer
+import tc.tc_decomp
 
 from torch.utils.data import TensorDataset, DataLoader 
 
