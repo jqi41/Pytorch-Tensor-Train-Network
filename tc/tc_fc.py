@@ -53,7 +53,7 @@ class TTLinear(nn.Module):
     
     def forward(self, x):
         TensorTrain_W = TensorTrain(self.W_cores, self.tt_shape, self.tt_rank)
-        h = tc_math.matmul(x, TensorTrain_W, 'relu')
+        h = tc.tc_math.matmul(x, TensorTrain_W, 'relu')
         if self.activation is not None:
              if self.activation in activations:
                  if self.activation == 'sigmoid':
