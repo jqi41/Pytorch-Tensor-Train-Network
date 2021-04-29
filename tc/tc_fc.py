@@ -6,11 +6,11 @@ import torch
 import torch.nn as nn 
 import torch.optim as optim
 
-#import tc
-from tc_cores import TensorTrain, _are_tt_cores_valid
-import tc_math 
-from tc_init import get_variables, glorot_initializer, he_initializer, lecun_initializer
-import tc_decomp
+import tc
+from tt.tc_cores import TensorTrain, _are_tt_cores_valid
+import tt.tc_math 
+from tt.tc_init import get_variables, glorot_initializer, he_initializer, lecun_initializer
+import tt.tc_decomp
 
 from torch.utils.data import TensorDataset, DataLoader 
 
