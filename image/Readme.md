@@ -26,4 +26,12 @@ parser.add_argument('--save_model', default='tt_mnist.pt', help='Directory of th
   year={2020},
   organization={IEEE}
 }
+
+@article{qi2020exploring,
+  title={Exploring Deep Hybrid Tensor-to-Vector Network Architectures for Regression Based Speech Enhancement$\}$$\}$},
+  author={Qi, Jun and Hu, Hu and Wang, Yannan and Yang, Chao-Han Huck and Siniscalchi, Sabato Marco and Lee, Chin-Hui},
+  journal={Proc. Interspeech 2020},
+  pages={76--80},
+  year={2020}
+}
 ```
