@@ -74,3 +74,6 @@ We also borrow some c header files from the open-source project and the recently
 [3] Novikov, A., Podoprikhin, D., Osokin, A., & Vetrov, D. P. (2015). Tensorizing neural networks. In Advances in neural information processing systems (pp. 442-450).
 
 [4] Novikov et al. [T3F](https://github.com/Bihaqo/t3f) Tensor Train Decomposition on TensorFlow (T3F), JMLR 2020, http://jmlr.org/papers/v21/18-008.html
+
+
+Models  params  CE  Acc(%)
