@@ -62,10 +62,12 @@ If you are interested on reproducing the results of [1] and [2] please contact. 
 
 If you use the codes for your research work, please consider citing the following papers:
 
-[1] Jun Qi, Hu Hu, Yannan Wang, Chao-Han Huck Yang, Sabato Marco Siniscalchi, Chin-Hui Lee, "Tensor-to-Vector Regression for Multi-Channel Speech Enhancement based on Tensor-Train Network,” in Proc. IEEE Intl. Conf. on Acoustics, Speech, and Signal Processing (ICASSP), Barcelona, Spain, 2020. 
+[1] Jun Qi, Chao-Han Huck Yang, Pin-Yu Chen, Javier Tejedor, "Exploiting Low-Rank Tensor-Train Deep Neural Networks Based on Riemannian Gradient Descent with Illustration of Speech Processing," IEEE/ACM Transactions on Audio, Speech and Language Processing (T-ASLP), Vol. 31, pp. 633-642, 2023
+
+[2] Jun Qi, Hu Hu, Yannan Wang, Chao-Han Huck Yang, Sabato Marco Siniscalchi, Chin-Hui Lee, "Tensor-to-Vector Regression for Multi-Channel Speech Enhancement based on Tensor-Train Network,” in Proc. IEEE Intl. Conf. on Acoustics, Speech, and Signal Processing (ICASSP), Barcelona, Spain, 2020 
 https://arxiv.org/abs/2002.00544
 
-[2] Jun Qi, Hu Hu, Huck Yang, Sabato Marco Siniscalchi, Chin-Hui Lee, “Exploring Deep Hybrid Tensor-to-Vector Network Architectures for Regression Based Speech Enhancement,”  in Proc. Annual Conference of the International Speech Communication Association (INTERSPEECH), Shanghai, China, 2020. https://arxiv.org/abs/2007.13024v2
+[3] Jun Qi, Hu Hu, Huck Yang, Sabato Marco Siniscalchi, Chin-Hui Lee, “Exploring Deep Hybrid Tensor-to-Vector Network Architectures for Regression Based Speech Enhancement,”  in Proc. Annual Conference of the International Speech Communication Association (INTERSPEECH), Shanghai, China, 2020 https://arxiv.org/abs/2007.13024v2
 
 ## Reference:
 
